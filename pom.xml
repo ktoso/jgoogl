@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>pl.project13</groupId>
+    <artifactId>jgoogl</artifactId>
+    <version>1.0</version>
+
+    <developers>
+        <developer>
+            <id>ktoso</id>
+            <name>Konrad Malawski</name>
+            <email>konrad.malawski@java.pl</email>
+            <organization>Project13.pl</organization>
+            <organizationUrl>http://www.project13.pl</organizationUrl>
+        </developer>
+    </developers>
+
+    <repositories>
+        <repository>
+            <id>google-gson</id>
+            <name>Gson</name>
+            <url>http://google-gson.googlecode.com/svn/mavenrepo/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <!-- TEST -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+
+</project>
