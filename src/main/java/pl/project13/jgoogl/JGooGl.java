@@ -7,15 +7,11 @@ import com.ning.http.client.Response;
 import pl.project13.jgoogl.conf.GooGlProjection;
 import pl.project13.jgoogl.conf.GooGlVersion;
 import pl.project13.jgoogl.request.v1.RequestBuilder;
-import pl.project13.jgoogl.response.v1.GooGlResponse;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-
-import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * Date: 1/16/11
@@ -50,16 +46,18 @@ public class JGooGl {
   }
 
   public ShortenResponse shorten(String url) throws IOException, ExecutionException, InterruptedException {
-
-
-    Future<Response> futureResponse =     requestBuilder.apiKey(apiKey)
-                  .shorten(url)
-                  .execute();
+    Future<Response> futureResponse = requestBuilder.apiKey(apiKey)
+                                                    .shorten(url)
+                                                    .execute();
 
     Response response = futureResponse.get();
     ShortenResponse gooGlResponse = parseResponse(response.getResponseBody());
 
     return gooGlResponse;
+  }
+
+  public ShortenResponse expand(String shortUrl) {
+    return null;  //To change body of created methods use File | Settings | File Templates.
   }
 
   @VisibleForTesting
