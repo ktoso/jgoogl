@@ -15,9 +15,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ShortenResponse extends GooGlResponse {
 
-  private String kind    = "";
-  private String id      = "";
+  @SerializedName("id")
+  private String shortUrl = "";
   private String longUrl = "";
+  private String kind    = "";
 
   public ShortenResponse() {
   }
@@ -33,14 +34,14 @@ public class ShortenResponse extends GooGlResponse {
   /**
    * Id is the short URL that expands to the long URL you provided. If your request includes an auth token,
    * then this URL will be unique. If not, then it might be reused from a previous request to shorten the same URL.
-   * @return the id, described above
+   * @return the shortUrl, described above
    */
-  public String getId() {
-    return id;
+  public String getShortUrl() {
+    return shortUrl;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setShortUrl(String shortUrl) {
+    this.shortUrl = shortUrl;
   }
 
   /**
@@ -62,7 +63,7 @@ public class ShortenResponse extends GooGlResponse {
   public String toString() {
     return "ShortenResponse{" +
         "kind='" + kind + '\'' +
-        ", id='" + id + '\'' +
+        ", shortUrl='" + shortUrl + '\'' +
         ", longUrl='" + longUrl + '\'' +
         ", error=" + error +
         '}';

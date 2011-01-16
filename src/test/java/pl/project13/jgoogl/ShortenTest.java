@@ -31,6 +31,6 @@ public class ShortenTest {
     assertThat(shortResponse.hasErrors()).isFalse();
     assertThat(shortResponse.getLongUrl()).isEqualTo(longUrl);
     assertThat(shortResponse.getKind()).isEqualTo("urlshortener#url");
-    assertThat(shortResponse.getId()).isEqualTo(shortenedLongUrl);
+    assertThat(shortResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
   }
 }

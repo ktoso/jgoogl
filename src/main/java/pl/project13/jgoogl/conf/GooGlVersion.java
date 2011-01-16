@@ -11,7 +11,6 @@ public enum GooGlVersion {
   public final String serviceUrl;
 
   GooGlVersion(String serviceUrl) {
-
     this.serviceUrl = serviceUrl;
   }
 }

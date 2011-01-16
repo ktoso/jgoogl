@@ -1,5 +1,6 @@
 package pl.project13.jgoogl.response.v1;
 
+import com.google.gson.annotations.SerializedName;
 import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
 /**
@@ -16,20 +17,21 @@ import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
  */
 public class ExpandResponse extends GooGlResponse {
 
-  private String      id      = "";
-  private String      longUrl = "";
-  private GooGlStatus status  = GooGlStatus.OK;
-  private String      kind    = "";
+  @SerializedName("id")
+  private String      shortUrl = "";
+  private String      longUrl  = "";
+  private GooGlStatus status   = GooGlStatus.OK;
+  private String      kind     = "";
 
   public ExpandResponse() {
   }
 
-  public String getId() {
-    return id;
+  public String getShortUrl() {
+    return shortUrl;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setShortUrl(String shortUrl) {
+    this.shortUrl = shortUrl;
   }
 
   /**
@@ -71,7 +73,7 @@ public class ExpandResponse extends GooGlResponse {
   @Override
   public String toString() {
     return "ExpandResponse{" +
-        "id='" + id + '\'' +
+        "shortUrl='" + shortUrl + '\'' +
         ", longUrl='" + longUrl + '\'' +
         ", status='" + status + '\'' +
         ", error=" + error +
