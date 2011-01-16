@@ -1,5 +1,7 @@
 package pl.project13.jgoogl.response.v1;
 
+import java.math.BigDecimal;
+
 /**
  * <pre>
  * {
@@ -17,6 +19,7 @@ public class ExpandResponse extends GooGlResponse {
   private String id      = "";
   private String longUrl = "";
   private String status  = "OK";
+  private String kind = "";
 
   public ExpandResponse() {
   }
@@ -55,6 +58,14 @@ public class ExpandResponse extends GooGlResponse {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public String getKind() {
+    return kind;
+  }
+
+  public void setKind(String kind) {
+    this.kind = kind;
   }
 
   @Override

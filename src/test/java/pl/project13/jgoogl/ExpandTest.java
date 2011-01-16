@@ -13,7 +13,7 @@ import static org.fest.assertions.Assertions.assertThat;
  *
  * @author Konrad Malawski
  */
-public class JGooGlTest {
+public class ExpandTest {
 
   Logger log = Logger.getLogger(this.getClass());
 
@@ -22,19 +22,6 @@ public class JGooGlTest {
   // test data
   String longUrl          = "http://www.project13.pl/"; // note the trailing slash, Google will add it in their response anyways
   String shortenedLongUrl = "http://goo.gl/ZA9Yx"; // the above should be shortened to this url
-
-  @Test
-  public void shouldShortenProperly() throws Exception {
-    ShortenResponse shortResponse = jGooGl.shorten(longUrl);
-
-    log.info("Unserialized response: " + shortResponse);
-
-    assertThat(shortResponse).isNotNull();
-    assertThat(shortResponse.hasErrors()).isFalse();
-    assertThat(shortResponse.getLongUrl()).isEqualTo(longUrl);
-    assertThat(shortResponse.getKind()).isEqualTo("urlshortener#url");
-    assertThat(shortResponse.getId()).isEqualTo(shortenedLongUrl);
-  }
 
   @Test
   public void shouldExpandProperly() throws Exception {
@@ -46,8 +33,8 @@ public class JGooGlTest {
     assertThat(expandResponse.hasErrors()).isFalse();
     assertThat(expandResponse.getId()).isEqualTo(shortenedLongUrl);
     assertThat(expandResponse.getLongUrl()).isEqualTo(longUrl);
-//    assertThat(expandResponse.getKind()).isEqualTo("urlshortener#url");
-//    assertThat(expandResponse.getId()).isEqualTo(shortenedLongUrl);
+    assertThat(expandResponse.getKind()).isEqualTo("urlshortener#url");
+    assertThat(expandResponse.getId()).isEqualTo(shortenedLongUrl);
   }
 
   @Test(expected = InvalidGooGlUrlException.class)
