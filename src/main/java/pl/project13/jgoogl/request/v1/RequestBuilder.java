@@ -4,14 +4,18 @@ import com.google.gson.Gson;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.Response;
+import org.apache.log4j.Logger;
 import pl.project13.jgoogl.conf.GooGlVersion;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.google.common.collect.Maps.newHashMap;
+import static pl.project13.jgoogl.utils.StringUtils.hasText;
 
 /**
  * Date: 1/16/11
@@ -19,6 +23,8 @@ import static com.google.common.collect.Maps.newHashMap;
  * @author Konrad Malawski
  */
 public class RequestBuilder {
+
+  private Logger log = Logger.getLogger(getClass());
 
   private AsyncHttpClient asyncHttpClient;
   private Gson            gson;
@@ -63,8 +69,7 @@ public class RequestBuilder {
       builder = asyncHttpClient.preparePost(version.serviceUrl)
                                .setBody(gson.toJson(params));
     } else {
-      builder = asyncHttpClient.prepareGet(version.serviceUrl);
-      addQueryParams(builder);
+      builder = asyncHttpClient.prepareGet(prepareGetUrl(version.serviceUrl));
     }
 
     builder.addHeader("Content-type", APP_JSON)
@@ -73,11 +78,27 @@ public class RequestBuilder {
     return builder;
   }
 
-  private void addQueryParams(BoundRequestBuilder builder) {
+  private String prepareGetUrl(String serviceUrl) {
+    StringBuilder sb = new StringBuilder(serviceUrl).append("?");
+
     for (String key : params.keySet()) {
       String value = params.get(key);
-      builder.addQueryParameter(key, value);
+      if (hasText(value)) {
+        sb.append(key).append("=").append(urlEncode(value));
+      }
     }
+
+    return sb.toString();
+  }
+
+  private String urlEncode(String value) {
+    String encode = value;
+    try {
+      encode = URLEncoder.encode(value, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      log.error("Could not urlencode parameter", e);
+    }
+    return encode;
   }
 
   private boolean shouldPost() {
