@@ -7,6 +7,29 @@
     <groupId>pl.project13</groupId>
     <artifactId>jgoogl</artifactId>
     <version>1.0</version>
+    <name>jGooGl - Fluent goo.gl API Java Wrapper</name>
+    <description>
+        goo.gl is a Google service to shorten links, much like bit.ly or others.
+
+        jGooGl is an wrapper around the API Google offers for this service, using it,
+        it's really easy to get shortened links or revert such goo.gl/example links.
+    </description>
+    <url>http://github.com/ktoso/jgoogl</url>
+
+    <inceptionYear>2011</inceptionYear>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://ktoso@github.com/ktoso/jgoogl.git/</connection>
+        <developerConnection>scm:git:https://ktoso@github.com/ktoso/jgoogl.git</developerConnection>
+        <url>https://github.com/ktoso/jgoogl</url>
+    </scm>
 
     <developers>
         <developer>

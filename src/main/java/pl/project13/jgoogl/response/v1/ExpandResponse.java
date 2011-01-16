@@ -1,6 +1,6 @@
 package pl.project13.jgoogl.response.v1;
 
-import java.math.BigDecimal;
+import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
 /**
  * <pre>
@@ -16,10 +16,10 @@ import java.math.BigDecimal;
  */
 public class ExpandResponse extends GooGlResponse {
 
-  private String id      = "";
-  private String longUrl = "";
-  private String status  = "OK";
-  private String kind = "";
+  private String      id      = "";
+  private String      longUrl = "";
+  private GooGlStatus status  = GooGlStatus.OK;
+  private String      kind    = "";
 
   public ExpandResponse() {
   }
@@ -52,11 +52,11 @@ public class ExpandResponse extends GooGlResponse {
    *
    * @return the status of this url, as described above
    */
-  public String getStatus() {
+  public GooGlStatus getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(GooGlStatus status) {
     this.status = status;
   }
 

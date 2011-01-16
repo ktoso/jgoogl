@@ -5,6 +5,7 @@ import org.junit.Test;
 import pl.project13.jgoogl.exceptions.InvalidGooGlUrlException;
 import pl.project13.jgoogl.response.v1.ExpandResponse;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
+import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -32,6 +33,7 @@ public class ExpandTest {
     assertThat(expandResponse).isNotNull();
     assertThat(expandResponse.hasErrors()).isFalse();
     assertThat(expandResponse.getId()).isEqualTo(shortenedLongUrl);
+    assertThat(expandResponse.getStatus()).isEqualTo(GooGlStatus.OK);
     assertThat(expandResponse.getLongUrl()).isEqualTo(longUrl);
     assertThat(expandResponse.getKind()).isEqualTo("urlshortener#url");
     assertThat(expandResponse.getId()).isEqualTo(shortenedLongUrl);

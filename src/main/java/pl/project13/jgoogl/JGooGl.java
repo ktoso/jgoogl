@@ -6,6 +6,7 @@ import com.ning.http.client.Response;
 import pl.project13.jgoogl.conf.GooGlProjection;
 import pl.project13.jgoogl.conf.GooGlVersion;
 import pl.project13.jgoogl.exceptions.InvalidGooGlUrlException;
+import pl.project13.jgoogl.gson.GooGlGsonProvider;
 import pl.project13.jgoogl.request.v1.RequestBuilder;
 import pl.project13.jgoogl.response.v1.ExpandResponse;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
@@ -31,7 +32,7 @@ public class JGooGl {
   private GooGlProjection projection = GooGlProjection.ANALYTICS_NONE;
 
   public JGooGl() {
-    this(new Gson(), new AsyncHttpClient());
+    this(GooGlGsonProvider.get(), new AsyncHttpClient());
     requestBuilder = new RequestBuilder(asyncHttpClient, gson);
   }
 

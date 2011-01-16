@@ -3,7 +3,10 @@ package pl.project13.jgoogl;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import pl.project13.jgoogl.gson.GooGlGsonProvider;
+import pl.project13.jgoogl.response.v1.ExpandResponse;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
+import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -15,6 +18,8 @@ import static org.fest.assertions.Assertions.assertThat;
 public class DeserializationTest {
 
   Logger log = Logger.getLogger(this.getClass());
+
+  Gson gson = GooGlGsonProvider.get();
 
   @Test
   public void shouldParseErrorProperly() throws Exception {
@@ -32,7 +37,7 @@ public class DeserializationTest {
         " }\n" +
         "}";
 
-    ShortenResponse response = new Gson().fromJson(errorJson, ShortenResponse.class);
+    ShortenResponse response = gson.fromJson(errorJson, ShortenResponse.class);
 
     log.info("Unserialized response: " + response);
 
@@ -64,7 +69,7 @@ public class DeserializationTest {
         " }\n" +
         "}";
 
-    ShortenResponse response = new Gson().fromJson(errorJson, ShortenResponse.class);
+    ShortenResponse response = gson.fromJson(errorJson, ShortenResponse.class);
 
     log.info("Unserialized response: " + response);
 
@@ -73,5 +78,21 @@ public class DeserializationTest {
     assertThat(response.hasErrors()).isTrue();
     assertThat(response.getError().getCode()).isEqualTo(500);
     assertThat(response.getError().getMessage()).isEqualTo("Internal Error");
+  }
+
+  @Test
+  public void shouldDeserializeStatuses() throws Exception {
+    String test = "{\n" +
+        " \"kind\": \"urlshortener#url\",\n" +
+        " \"id\": \"http://goo.gl/fbsS\",\n" +
+        " \"longUrl\": \"http://www.google.com/\",\n" +
+        " \"status\": \"REMOVED\"\n" +
+        "}";
+
+    ExpandResponse response = gson.fromJson(test, ExpandResponse.class);
+
+    assertThat(response).isNotNull();
+    assertThat(response.hasErrors()).isFalse();
+    assertThat(response.getStatus()).isEqualTo(GooGlStatus.REMOVED);
   }
 }

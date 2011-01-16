@@ -96,7 +96,7 @@ public class RequestBuilder {
     try {
       encode = URLEncoder.encode(value, "UTF-8");
     } catch (UnsupportedEncodingException e) {
-      log.error("Could not urlencode parameter", e);
+      log.error("Could not urlEncode parameter", e);
     }
     return encode;
   }
