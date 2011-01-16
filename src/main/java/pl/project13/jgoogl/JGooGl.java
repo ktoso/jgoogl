@@ -1,5 +1,7 @@
 package pl.project13.jgoogl;
 
+import pl.project13.jgoogl.response.ShortGooGlResponse;
+
 /**
  * Date: 1/16/11
  *
