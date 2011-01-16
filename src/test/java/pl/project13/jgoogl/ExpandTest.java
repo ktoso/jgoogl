@@ -42,4 +42,9 @@ public class ExpandTest {
     jGooGl.expand("ww.goo.gl/");
   }
 
+  @Test(expected = InvalidGooGlUrlException.class)
+  public void thisExpandShouldAlsoThrowOnBadUrl() throws Exception {
+    jGooGl.expand("http://www.somesite.com/?ww.goo.gl/");
+  }
+
 }

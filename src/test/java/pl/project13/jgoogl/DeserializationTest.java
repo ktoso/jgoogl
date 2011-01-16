@@ -17,7 +17,7 @@ public class DeserializationTest {
   Logger log = Logger.getLogger(this.getClass());
 
   @Test
-  public void testErrorParse() throws Exception {
+  public void shouldParseErrorProperly() throws Exception {
     String errorJson = "{\n" +
         " \"error\": {\n" +
         "  \"errors\": [\n" +
@@ -44,7 +44,7 @@ public class DeserializationTest {
   }
 
   @Test
-  public void testMoreErrorsParse() throws Exception {
+  public void shouldHaveMoreErrors() throws Exception {
     String errorJson = "{\n" +
         " \"error\": {\n" +
         "  \"errors\": [\n" +
