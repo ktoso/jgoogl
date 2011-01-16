@@ -1,5 +1,6 @@
 package pl.project13.jgoogl;
 
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
@@ -14,8 +15,6 @@ import static org.fest.assertions.Assertions.assertThat;
 public class DeserializationTest {
 
   Logger log = Logger.getLogger(this.getClass());
-
-  JGooGl jGooGl = new JGooGl();
 
   @Test
   public void testErrorParse() throws Exception {
@@ -33,7 +32,7 @@ public class DeserializationTest {
         " }\n" +
         "}";
 
-    ShortenResponse response = jGooGl.parseResponse(errorJson);
+    ShortenResponse response = new Gson().fromJson(errorJson, ShortenResponse.class);
 
     log.info("Unserialized response: " + response);
 
@@ -65,7 +64,7 @@ public class DeserializationTest {
         " }\n" +
         "}";
 
-    ShortenResponse response = jGooGl.parseResponse(errorJson);
+    ShortenResponse response = new Gson().fromJson(errorJson, ShortenResponse.class);
 
     log.info("Unserialized response: " + response);
 

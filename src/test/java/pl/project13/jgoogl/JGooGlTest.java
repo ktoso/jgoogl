@@ -2,6 +2,8 @@ package pl.project13.jgoogl;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import pl.project13.jgoogl.exceptions.InvalidGooGlUrlException;
+import pl.project13.jgoogl.response.v1.ExpandResponse;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -36,15 +38,21 @@ public class JGooGlTest {
 
   @Test
   public void shouldExpandProperly() throws Exception {
-    ShortenResponse shortResponse = jGooGl.expand(longUrl);
+    ExpandResponse expandResponse = jGooGl.expand(shortenedLongUrl);
 
-    log.info("Unserialized response: " + shortResponse);
+    log.info("Unserialized response: " + expandResponse);
 
-    assertThat(shortResponse).isNotNull();
-    assertThat(shortResponse.hasErrors()).isFalse();
-    assertThat(shortResponse.getLongUrl()).isEqualTo(longUrl);
-    assertThat(shortResponse.getKind()).isEqualTo("urlshortener#url");
-    assertThat(shortResponse.getId()).isEqualTo(shortenedLongUrl);
+    assertThat(expandResponse).isNotNull();
+    assertThat(expandResponse.hasErrors()).isFalse();
+    assertThat(expandResponse.getId()).isEqualTo(shortenedLongUrl);
+    assertThat(expandResponse.getLongUrl()).isEqualTo(longUrl);
+//    assertThat(expandResponse.getKind()).isEqualTo("urlshortener#url");
+//    assertThat(expandResponse.getId()).isEqualTo(shortenedLongUrl);
+  }
+
+  @Test(expected = InvalidGooGlUrlException.class)
+  public void expandShouldThrowOnBadUrl() throws Exception {
+    jGooGl.expand("ww.goo.gl/");
   }
 
 }

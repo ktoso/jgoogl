@@ -1,17 +1,19 @@
 package pl.project13.jgoogl;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import pl.project13.jgoogl.conf.GooGlProjection;
 import pl.project13.jgoogl.conf.GooGlVersion;
+import pl.project13.jgoogl.exceptions.InvalidGooGlUrlException;
 import pl.project13.jgoogl.request.v1.RequestBuilder;
+import pl.project13.jgoogl.response.v1.ExpandResponse;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 /**
  * Date: 1/16/11
@@ -20,75 +22,72 @@ import java.util.concurrent.Future;
  */
 public class JGooGl {
 
-  private Gson            gson            = new Gson();
-  private AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-  private RequestBuilder  requestBuilder  = new RequestBuilder(asyncHttpClient);
+  private Gson            gson;
+  private AsyncHttpClient asyncHttpClient;
+  private RequestBuilder  requestBuilder;
 
+  private String          apiKey     = null;
   private GooGlVersion    apiVersion = GooGlVersion.V1;
-  private String          apiKey     = "";
   private GooGlProjection projection = GooGlProjection.ANALYTICS_NONE;
 
-
   public JGooGl() {
+    this(new Gson(), new AsyncHttpClient());
+    requestBuilder = new RequestBuilder(asyncHttpClient, gson);
   }
 
-  public JGooGl(String apiKey) {
-    this.apiKey = apiKey;
+  public JGooGl(Gson gson, AsyncHttpClient asyncHttpClient) {
+    this.gson = gson;
+    this.asyncHttpClient = asyncHttpClient;
   }
 
   public JGooGl(GooGlVersion apiVersion) {
+    this();
     this.apiVersion = apiVersion;
+  }
+
+  public JGooGl(String apiKey) {
+    this();
+    this.apiKey = apiKey;
   }
 
   public JGooGl(GooGlVersion apiVersion, String apiKey) {
+    this();
     this.apiVersion = apiVersion;
     this.apiKey = apiKey;
   }
 
-  public ShortenResponse shorten(String url) throws IOException, ExecutionException, InterruptedException {
-    Future<Response> futureResponse = requestBuilder.apiKey(apiKey)
-                                                    .shorten(url)
-                                                    .execute();
-
-    Response response = futureResponse.get();
-    ShortenResponse gooGlResponse = parseResponse(response.getResponseBody());
-
-    return gooGlResponse;
-  }
-
-  public ShortenResponse expand(String shortUrl) {
-    return null;  //To change body of created methods use File | Settings | File Templates.
-  }
-
-  @VisibleForTesting
-  ShortenResponse parseResponse(String responseString) {
-    ShortenResponse response = gson.fromJson(responseString, ShortenResponse.class);
-    return response;
-  }
-
-  // noise
-
-  public GooGlVersion getApiVersion() {
-    return apiVersion;
-  }
-
-  public void setApiVersion(GooGlVersion apiVersion) {
+  public JGooGl(Gson gson, AsyncHttpClient asyncHttpClient, GooGlVersion apiVersion, String apiKey) {
+    this(gson, asyncHttpClient);
     this.apiVersion = apiVersion;
-  }
-
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  public void setApiKey(String apiKey) {
     this.apiKey = apiKey;
   }
 
-  public GooGlProjection getProjection() {
-    return projection;
+  public JGooGl withKey(String key) {
+    return new JGooGl(gson, asyncHttpClient, apiVersion, key);
   }
 
-  public void setProjection(GooGlProjection projection) {
-    this.projection = projection;
+  public JGooGl withoutKey() {
+    return new JGooGl(gson, asyncHttpClient, apiVersion, null);
   }
+
+  public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
+    String responseBody = requestBuilder.apiKey(apiKey).shorten(longUrl).execute();
+
+    return gson.fromJson(responseBody, ShortenResponse.class);
+  }
+
+  public ExpandResponse expand(String shortUrl) throws IOException, ExecutionException, InterruptedException {
+    throwIfNotGooGlUrl(shortUrl);
+
+    String responseBody = requestBuilder.apiKey(apiKey).expand(shortUrl).execute();
+
+    return gson.fromJson(responseBody, ExpandResponse.class);
+  }
+
+  private void throwIfNotGooGlUrl(String url) {
+    if(!(url.startsWith("goo.gl/") || url.startsWith("http://www.goo.gl/") || url.startsWith("http://goo.gl/"))){
+      throw new InvalidGooGlUrlException("It seems that the url: '" + url + "");
+    }
+  }
+
 }

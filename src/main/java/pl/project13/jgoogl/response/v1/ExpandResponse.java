@@ -1,7 +1,5 @@
 package pl.project13.jgoogl.response.v1;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * <pre>
  * {
@@ -11,53 +9,61 @@ import com.google.gson.annotations.SerializedName;
  *   "status":  "OK"
  * }
  * </pre>
+ *
  * @author Konrad Malawski
  */
 public class ExpandResponse extends GooGlResponse {
 
-
-  @SerializedName("status")
-  private ResponseStatus responseStatus = ResponseStatus.OK;
-
-  private String shortUrl = "";
-
+  private String id      = "";
+  private String longUrl = "";
+  private String status  = "OK";
 
   public ExpandResponse() {
   }
 
-  public String getShortUrl() {
-    return shortUrl;
+  public String getId() {
+    return id;
   }
 
-  public void setShortUrl(String shortUrl) {
-    this.shortUrl = shortUrl;
+  public void setId(String id) {
+    this.id = id;
   }
 
-  public ResponseStatus getResponseStatus() {
-    return responseStatus;
+  /**
+   * longUrl is the long URL to which it expands. Note that longUrl may
+   * not be present in the response, for example, if status is "REMOVED".
+   *
+   * @return
+   */
+  public String getLongUrl() {
+    return longUrl;
   }
 
-  public void setResponseStatus(ResponseStatus responseStatus) {
-    this.responseStatus = responseStatus;
+  public void setLongUrl(String longUrl) {
+    this.longUrl = longUrl;
+  }
+
+  /**
+   * status is "OK" for most URLs. If Google believes that the URL is fishy,
+   * status may be something else, such as "MALWARE". Another value this can take is "REMOVED".
+   *
+   * @return the status of this url, as described above
+   */
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   @Override
   public String toString() {
-    return "ShortenResponse{" +
-        "shortUrl='" + shortUrl + '\'' +
-        ", responseStatus=" + responseStatus +
+    return "ExpandResponse{" +
+        "id='" + id + '\'' +
+        ", longUrl='" + longUrl + '\'' +
+        ", status='" + status + '\'' +
         ", error=" + error +
         '}';
-  }
-
-  /**
-   * Field used to inform the user about the status of
-   * the requested expand operation -
-   *
-   * @author Konrad Malawski
-   */
-  public static enum ResponseStatus {
-    OK,
-    ERROR
   }
 }
