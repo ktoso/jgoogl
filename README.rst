@@ -1,5 +1,5 @@
 ********
-JGooGl - Fluent goo.gl API Java Wrapper
+jGooGl - Fluent goo.gl API Java Wrapper
 ********
 General information
 ===================
@@ -11,8 +11,14 @@ Currently there only is one version out - v1, but if something new should be add
 Usage examples
 ==============
 Using **jGooGl** is really easy, take a look at these few examples:
+  //without api key
+  JGooGl jGooGl = new JGooGl();
 
-  new jGooGl().expand('http://goo.gl/3X4m913');
+  ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
+
+  String url = jGooGl.withKey("myapikey").short("http://goo.gl/3X4m913").url();
+
+  jGooGl.expand("http://project13.pl");
 
 Maven repo
 ==========
