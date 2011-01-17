@@ -11,14 +11,14 @@ Usage examples
 --------------
 Using **jGooGl** is really easy, take a look at these few examples:
 
-  // you may use jGooGl without an API key
-  JGooGl jGooGl = new JGooGl();
-
-  ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
-
-  String url = jGooGl.withKey("myapikey").short("http://goo.gl/3X4m913").url();
-
-  jGooGl.expand("http://project13.pl");
+    // you may use jGooGl without an API key
+    JGooGl jGooGl = new JGooGl();
+    
+    ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
+    
+    String url = jGooGl.withKey("myapikey").short("http://goo.gl/3X4m913").url();
+    
+    jGooGl.expand("http://project13.pl");
 
 Frequently Asked Questions
 --------------------------
