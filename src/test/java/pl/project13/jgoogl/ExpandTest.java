@@ -17,7 +17,7 @@ public class ExpandTest {
 
   Logger log = Logger.getLogger(this.getClass());
 
-  JGooGl jGooGl = new JGooGl();
+  JGooGl jGooGl = JGooGl.withoutKey();
 
   // test data
   String longUrl          = "http://www.project13.pl/"; // note the trailing slash, Google will add it in their response anyways

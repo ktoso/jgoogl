@@ -29,44 +29,42 @@ public class JGooGl {
   private GooGlVersion    apiVersion = GooGlVersion.V1;
   private GooGlProjection projection = GooGlProjection.ANALYTICS_NONE;
 
-  public JGooGl() {
+  private JGooGl() {
     this(GooGlGsonProvider.get(), new AsyncHttpClient());
     requestBuilder = new RequestBuilder(asyncHttpClient, gson);
   }
 
-  public JGooGl(Gson gson, AsyncHttpClient asyncHttpClient) {
+  private JGooGl(Gson gson, AsyncHttpClient asyncHttpClient) {
     this.gson = gson;
     this.asyncHttpClient = asyncHttpClient;
   }
 
-  public JGooGl(GooGlVersion apiVersion) {
-    this();
-    this.apiVersion = apiVersion;
-  }
-
-  public JGooGl(String apiKey) {
+  private JGooGl(String apiKey) {
     this();
     this.apiKey = apiKey;
   }
 
-  public JGooGl(GooGlVersion apiVersion, String apiKey) {
-    this();
-    this.apiVersion = apiVersion;
-    this.apiKey = apiKey;
+  public JGooGl addKey(String key) {
+    this.apiKey = key;
+    return this;
   }
 
-  public JGooGl(Gson gson, AsyncHttpClient asyncHttpClient, GooGlVersion apiVersion, String apiKey) {
-    this(gson, asyncHttpClient);
-    this.apiVersion = apiVersion;
-    this.apiKey = apiKey;
+  public JGooGl removeKey() {
+    this.apiKey = null;
+    return this;
   }
 
-  public JGooGl withKey(String key) {
-    return new JGooGl(gson, asyncHttpClient, apiVersion, key);
+  public JGooGl onVersion(GooGlVersion version){
+    this.apiVersion = version;
+    return this;
   }
 
-  public JGooGl withoutKey() {
-    return new JGooGl(gson, asyncHttpClient, apiVersion, null);
+  public static JGooGl withKey(String key) {
+    return new JGooGl(key);
+  }
+
+  public static JGooGl withoutKey() {
+    return new JGooGl();
   }
 
   public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
@@ -85,6 +83,8 @@ public class JGooGl {
 
   public AnalyticsResponse analyticsFor(String url) throws IOException, ExecutionException, InterruptedException {
 
+    String responseBody = "";
+    return gson.fromJson(responseBody, AnalyticsResponse.class);
   }
 
   private void throwIfNotGooGlUrl(String url) {
