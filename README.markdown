@@ -32,7 +32,8 @@ Using **jGooGl** is really easy, take a look at these few examples.
         jGooGl.shorten("http://project13.pl");
 
 3. The "one-liner" apparoach
-     String short = JGooGl.withKey("toHyruleCastle").expand("shorten").url();
+
+        String short = JGooGl.withKey("toHyruleCastle").expand("shorten").url();
 
 Frequently Asked Questions
 --------------------------
