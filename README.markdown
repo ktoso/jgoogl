@@ -26,12 +26,29 @@ Using **jGooGl** is really easy, take a look at these few examples.
 
         ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
 
-        String url = jGooGl.withKey("myapikey")
-                           .short("http://goo.gl/3X4m913").url();
+        String url = jGooGl.addKey("myapikey")
+                           .expand("http://goo.gl/3X4m913")
+                           .getLongUrl();
 
-        jGooGl.shorten("http://project13.pl");
+        jGooGl.shorten("http://project13.pl").getShortUrl();
 
-3. The "one-liner" apparoach
+3. You can have statistics queried for each, or just for one query done on on particulair jGooGl instance
+       jGooGl.alwaysWithAnalytics(ALL)
+             .expand(url);                      // will make each expand query on 
+       (AnalyticsResponse) jGooGl.expand(url);  // this instance fetch ALL analytics details
+                                                // don't over use this if you dont need it though
+
+There is a small catch there, although: `.withAnalytics().expand()` does return `AnalyticsResponse`
+and no casting is neededm if you'd use it like above - explicitly on jGooGl you'd have to do an explicite cast.
+This obviously sux, so here's how to avoid it:
+       
+        // As no analytics mode is given, it will re-use the last used mode, or fallback to NONE
+        AnalyticsResponse response = jGooGl.expandWithAnalytics(url);
+
+Instead of the alwaysWith method, there's also an with\* method family that will only use the setting on the following query.
+        // the 'just this time' version would look like this
+        jGooGl.withAnalytics(ALL).expand(url)
+4. The "one-liner" apparoach
 
         String short = JGooGl.withKey("toHyruleCastle").expand("shorten").url();
 
