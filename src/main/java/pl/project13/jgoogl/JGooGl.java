@@ -2,19 +2,17 @@ package pl.project13.jgoogl;
 
 import com.google.gson.Gson;
 import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Response;
 import pl.project13.jgoogl.conf.GooGlProjection;
 import pl.project13.jgoogl.conf.GooGlVersion;
 import pl.project13.jgoogl.exceptions.InvalidGooGlUrlException;
 import pl.project13.jgoogl.gson.GooGlGsonProvider;
 import pl.project13.jgoogl.request.v1.RequestBuilder;
+import pl.project13.jgoogl.response.v1.AnalyticsResponse;
 import pl.project13.jgoogl.response.v1.ExpandResponse;
 import pl.project13.jgoogl.response.v1.ShortenResponse;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.regex.Pattern;
 
 /**
  * Date: 1/16/11
@@ -83,6 +81,10 @@ public class JGooGl {
     String responseBody = requestBuilder.apiKey(apiKey).expand(shortUrl).execute();
 
     return gson.fromJson(responseBody, ExpandResponse.class);
+  }
+
+  public AnalyticsResponse analyticsFor(String url) throws IOException, ExecutionException, InterruptedException {
+
   }
 
   private void throwIfNotGooGlUrl(String url) {
