@@ -34,7 +34,7 @@ Using **jGooGl** is really easy, take a look at these few examples.
 Frequently Asked Questions
 --------------------------
 <ul>
-<li>***Q: Why would I need an API key if it works without one?***<br/>
+<li>**Q: Why would I need an API key if it works without one?**<br/>
 A: Sure it **seems** like it's working as good with an API key,
 that is, until you reach Google's query limits. The limits imposed on users with an api key
 are fare less restrictive than anonymous users. So if your building this feature into an website
