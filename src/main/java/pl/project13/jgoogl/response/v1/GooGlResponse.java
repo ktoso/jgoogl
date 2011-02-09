@@ -19,7 +19,7 @@ public abstract class GooGlResponse {
     this.error = error;
   }
 
-  public boolean hasErrors(){
-    return error != null;
+  public boolean hasErrors() {
+    return error != null && (error.getErrors() != null && error.getErrors().size() > 0);
   }
 }

@@ -27,7 +27,7 @@ public class ExpandTest {
   public void shouldExpandProperly() throws Exception {
     ExpandResponse expandResponse = jGooGl.expand(shortenedLongUrl);
 
-    log.info("Unserialized response: " + expandResponse);
+    log.info("Deserialized response: " + expandResponse);
 
     assertThat(expandResponse).isNotNull();
     assertThat(expandResponse.hasErrors()).isFalse();

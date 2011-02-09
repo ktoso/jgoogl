@@ -18,10 +18,10 @@ import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 public class ExpandResponse extends GooGlResponse {
 
   @SerializedName("id")
-  private String      shortUrl = "";
-  private String      longUrl  = "";
-  private GooGlStatus status   = GooGlStatus.OK;
-  private String      kind     = "";
+  protected String      shortUrl = "";
+  protected String      longUrl  = "";
+  protected GooGlStatus status   = GooGlStatus.OK;
+  protected String      kind     = "";
 
   public ExpandResponse() {
   }

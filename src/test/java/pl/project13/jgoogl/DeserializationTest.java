@@ -39,7 +39,7 @@ public class DeserializationTest {
 
     ShortenResponse response = gson.fromJson(errorJson, ShortenResponse.class);
 
-    log.info("Unserialized response: " + response);
+    log.info("Deserialized response: " + response);
 
     assertThat(response).isNotNull();
     assertThat(response.getError().getErrors()).hasSize(1);
@@ -71,7 +71,7 @@ public class DeserializationTest {
 
     ShortenResponse response = gson.fromJson(errorJson, ShortenResponse.class);
 
-    log.info("Unserialized response: " + response);
+    log.info("Deserialized response: " + response);
 
     assertThat(response).isNotNull();
     assertThat(response.getError().getErrors()).hasSize(2);

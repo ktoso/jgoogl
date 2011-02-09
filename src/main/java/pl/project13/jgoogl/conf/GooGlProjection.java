@@ -11,10 +11,6 @@ package pl.project13.jgoogl.conf;
 public enum GooGlProjection {
 
   /**
-   * Przekaż stałą do metody expandShortcut jeśli nie potrzebujesz statystyk
-   */
-  ANALYTICS_NONE(""),
-  /**
    * Przekaż stałą do metody expandShortcut jeśli interesują cię statystyki kliknięć
    */
   ANALYTICS_CLICKS("ANALYTICS_CLICKS"),
@@ -29,7 +25,6 @@ public enum GooGlProjection {
    */
   ANALYTICS_FULL("FULL");
 
-  public final String urlParamKey = "projection";
   public final String urlParamValue;
 
   GooGlProjection(String urlParamValue) {

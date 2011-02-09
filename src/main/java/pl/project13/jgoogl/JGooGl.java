@@ -27,7 +27,7 @@ public class JGooGl {
 
   private String          apiKey     = null;
   private GooGlVersion    apiVersion = GooGlVersion.V1;
-  private GooGlProjection projection = GooGlProjection.ANALYTICS_NONE;
+  private GooGlProjection projection = GooGlProjection.ANALYTICS_CLICKS;
 
   private JGooGl() {
     this(GooGlGsonProvider.get(), new AsyncHttpClient());
@@ -54,7 +54,7 @@ public class JGooGl {
     return this;
   }
 
-  public JGooGl onVersion(GooGlVersion version){
+  public JGooGl onVersion(GooGlVersion version) {
     this.apiVersion = version;
     return this;
   }
@@ -68,7 +68,11 @@ public class JGooGl {
   }
 
   public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
-    String responseBody = requestBuilder.apiKey(apiKey).shorten(longUrl).execute();
+    String responseBody = requestBuilder.apiKey(apiKey)
+                                        .apiVersion(apiVersion)
+                                        .projection(projection)
+                                        .shorten(longUrl)
+                                        .execute();
 
     return gson.fromJson(responseBody, ShortenResponse.class);
   }
@@ -76,19 +80,38 @@ public class JGooGl {
   public ExpandResponse expand(String shortUrl) throws IOException, ExecutionException, InterruptedException {
     throwIfNotGooGlUrl(shortUrl);
 
-    String responseBody = requestBuilder.apiKey(apiKey).expand(shortUrl).execute();
+    String responseBody = requestBuilder.apiKey(apiKey)
+                                        .projection(projection)
+                                        .expand(shortUrl)
+                                        .execute();
 
-    return gson.fromJson(responseBody, ExpandResponse.class);
+    return parseExpandResponse(responseBody);
   }
 
-  public AnalyticsResponse analyticsFor(String url) throws IOException, ExecutionException, InterruptedException {
+  private ExpandResponse parseExpandResponse(String responseBody) {
+    if (projection == GooGlProjection.ANALYTICS_CLICKS) {
+      return gson.fromJson(responseBody, ExpandResponse.class);
+    } else {
+      return gson.fromJson(responseBody, AnalyticsResponse.class);
+    }
+  }
 
-    String responseBody = "";
-    return gson.fromJson(responseBody, AnalyticsResponse.class);
+  public JGooGl withAnalytics(GooGlProjection projection) {
+    this.projection = projection;
+    return this;
+  }
+
+  public AnalyticsResponse analyticsFor(String shortUrl) throws IOException, ExecutionException, InterruptedException {
+    return analyticsFor(shortUrl, GooGlProjection.ANALYTICS_FULL);
+  }
+
+  public AnalyticsResponse analyticsFor(String shortUrl, GooGlProjection projection) throws IOException, ExecutionException, InterruptedException {
+    withAnalytics(projection);
+    return (AnalyticsResponse) expand(shortUrl);
   }
 
   private void throwIfNotGooGlUrl(String url) {
-    if(!(url.startsWith("goo.gl/") || url.startsWith("http://www.goo.gl/") || url.startsWith("http://goo.gl/"))){
+    if (!(url.startsWith("goo.gl/") || url.startsWith("http://www.goo.gl/") || url.startsWith("http://goo.gl/"))) {
       throw new InvalidGooGlUrlException("It seems that the url: '" + url + "");
     }
   }

@@ -25,7 +25,7 @@ public class ShortenTest {
   public void shouldShortenProperly() throws Exception {
     ShortenResponse shortResponse = jGooGl.shorten(longUrl);
 
-    log.info("Unserialized response: " + shortResponse);
+    log.info("Deserialized response: " + shortResponse);
 
     assertThat(shortResponse).isNotNull();
     assertThat(shortResponse.hasErrors()).isFalse();

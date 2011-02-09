@@ -1,9 +1,6 @@
 package pl.project13.jgoogl.response.v1;
 
 import com.google.gson.annotations.SerializedName;
-import pl.project13.jgoogl.response.v1.GooGlAnalytics;
-import pl.project13.jgoogl.response.v1.GooGlResponse;
-import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
 import java.util.Date;
 
@@ -36,19 +33,101 @@ import java.util.Date;
  *
  * @author Konrad Malawski
  */
-public class AnalyticsResponse extends GooGlResponse {
-  @SerializedName("id")
-  private String      shortUrl;
-  private String      longUrl;
-  private GooGlStatus status;
-  private String      kind;
+public class AnalyticsResponse extends ExpandResponse {
   @SerializedName("created")
-  private Date        createdAt;
-
-  private GooGlAnalytics analytics;
+  private Date         createdAt;
+  private AnalyticsMap analytics;
 
   public AnalyticsResponse() {
   }
 
+  public Date getCreatedAt() {
+    return createdAt;
+  }
 
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public AnalyticsMap getAnalytics() {
+    return analytics;
+  }
+
+  public void setAnalytics(AnalyticsMap analytics) {
+    this.analytics = analytics;
+  }
+
+  private static class AnalyticsMap {
+    private GooGlAnalytics allTime;
+    private GooGlAnalytics month;
+    private GooGlAnalytics week;
+    private GooGlAnalytics day;
+    private GooGlAnalytics twoHours;
+
+    private AnalyticsMap() {
+    }
+
+    public GooGlAnalytics getAllTime() {
+      return allTime;
+    }
+
+    public void setAllTime(GooGlAnalytics allTime) {
+      this.allTime = allTime;
+    }
+
+    public GooGlAnalytics getMonth() {
+      return month;
+    }
+
+    public void setMonth(GooGlAnalytics month) {
+      this.month = month;
+    }
+
+    public GooGlAnalytics getWeek() {
+      return week;
+    }
+
+    public void setWeek(GooGlAnalytics week) {
+      this.week = week;
+    }
+
+    public GooGlAnalytics getDay() {
+      return day;
+    }
+
+    public void setDay(GooGlAnalytics day) {
+      this.day = day;
+    }
+
+    public GooGlAnalytics getTwoHours() {
+      return twoHours;
+    }
+
+    public void setTwoHours(GooGlAnalytics twoHours) {
+      this.twoHours = twoHours;
+    }
+
+    @Override
+    public String toString() {
+      return "AnalyticsMap{" +
+          "allTime=" + allTime +
+          ", month=" + month +
+          ", week=" + week +
+          ", day=" + day +
+          ", twoHours=" + twoHours +
+          '}';
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "AnalyticsResponse{" +
+        "createdAt=" + createdAt +
+        ", analytics=" + analytics +
+        ", shortUrl='" + shortUrl + '\'' +
+        ", longUrl='" + longUrl + '\'' +
+        ", status='" + status + '\'' +
+        ", error=" + error +
+        "} " ;
+  }
 }

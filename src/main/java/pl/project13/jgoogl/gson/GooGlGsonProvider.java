@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
+import java.util.Date;
+
 /**
  * Date: 1/16/11
  *
@@ -20,7 +22,9 @@ public class GooGlGsonProvider {
   public static Gson get() {
     GsonBuilder gsonBuilder = new GsonBuilder();
     gsonBuilder.setPrettyPrinting();
+
     gsonBuilder.registerTypeAdapter(GooGlStatus.class, new GooGlStatusDeserializer());
+    gsonBuilder.registerTypeAdapter(Date.class, new ISO8601DateDeserializer());
 
     return gsonBuilder.create();
   }
