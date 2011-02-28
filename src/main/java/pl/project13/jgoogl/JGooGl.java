@@ -25,9 +25,16 @@ public class JGooGl {
   private AsyncHttpClient asyncHttpClient;
   private RequestBuilder  requestBuilder;
 
-  private String          apiKey     = null;
-  private GooGlVersion    apiVersion = GooGlVersion.V1;
-  private GooGlProjection projection = GooGlProjection.ANALYTICS_CLICKS;
+  private class JGooGlContext {
+    String          apiKey     = null;
+    GooGlVersion    apiVersion = GooGlVersion.V1;
+    GooGlProjection projection = GooGlProjection.ANALYTICS_CLICKS;
+  }
+
+  private JGooGlContext defaultContext = new JGooGlContext();
+  private JGooGlContext flowContext    = new JGooGlContext();
+
+  /* CONSTRUCTORS */
 
   private JGooGl(Gson gson, AsyncHttpClient asyncHttpClient) {
     this.gson = gson;
@@ -41,23 +48,25 @@ public class JGooGl {
 
   private JGooGl(String apiKey) {
     this();
-    this.apiKey = apiKey;
+    defaultContext.apiKey = apiKey;
   }
 
   public JGooGl addKey(String key) {
-    this.apiKey = key;
+    defaultContext.apiKey = key;
     return this;
   }
 
   public JGooGl removeKey() {
-    this.apiKey = null;
+    defaultContext.apiKey = null;
     return this;
   }
 
   public JGooGl onVersion(GooGlVersion version) {
-    this.apiVersion = version;
+    defaultContext.apiVersion = version;
     return this;
   }
+
+  /* FACTORY METHODS */
 
   public static JGooGl withKey(String key) {
     return new JGooGl(key);
@@ -68,28 +77,42 @@ public class JGooGl {
   }
 
   public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
-    RequestBuilder builder = requestBuilder.apiKey(apiKey)
-                                           .apiVersion(apiVersion)
-                                           .projection(projection)
-                                           .shorten(longUrl);
-    String responseBody = builder.execute();
+    try {
+      RequestBuilder builder = requestBuilder.apiKey(flowContext.apiKey)
+                                             .apiVersion(flowContext.apiVersion)
+                                             .projection(flowContext.projection)
+                                             .shorten(longUrl);
+      String responseBody = builder.execute();
 
-    return gson.fromJson(responseBody, ShortenResponse.class);
+      return gson.fromJson(responseBody, ShortenResponse.class);
+    } finally {
+      clearFlowContext();
+    }
   }
 
   public ExpandResponse expand(String shortUrl) throws IOException, ExecutionException, InterruptedException {
-    throwIfNotGooGlUrl(shortUrl);
+    try {
+      throwIfNotGooGlUrl(shortUrl);
 
-    RequestBuilder builder = requestBuilder.apiKey(apiKey)
-                                           .projection(projection)
-                                           .expand(shortUrl);
-    String responseBody = builder.execute();
+      RequestBuilder builder = requestBuilder.apiKey(flowContext.apiKey)
+                                             .projection(flowContext.projection)
+                                             .expand(shortUrl);
+      String responseBody = builder.execute();
 
-    return parseExpandResponse(responseBody);
+      return parseExpandResponse(responseBody);
+    } finally {
+      clearFlowContext();
+    }
+  }
+
+  private void clearFlowContext() {
+    flowContext.apiKey = defaultContext.apiKey;
+    flowContext.apiVersion = defaultContext.apiVersion;
+    flowContext.projection = defaultContext.projection;
   }
 
   private ExpandResponse parseExpandResponse(String responseBody) {
-    if (projection == GooGlProjection.ANALYTICS_CLICKS) {
+    if (flowContext.projection == GooGlProjection.ANALYTICS_CLICKS) {
       return gson.fromJson(responseBody, ExpandResponse.class);
     } else {
       return gson.fromJson(responseBody, AnalyticsResponse.class);
@@ -97,7 +120,7 @@ public class JGooGl {
   }
 
   public JGooGl withAnalytics(GooGlProjection projection) {
-    this.projection = projection;
+    flowContext.projection = projection;
     return this;
   }
 
@@ -116,4 +139,36 @@ public class JGooGl {
     }
   }
 
+  public static class Builder {
+    private JGooGl instance = new JGooGl();
+
+    public JGooGl.Builder useSupplied(Gson gson) {
+      instance.gson = gson;
+      return this;
+    }
+
+    public JGooGl.Builder useSupplied(AsyncHttpClient asyncHttpClient) {
+      instance.asyncHttpClient = asyncHttpClient;
+      return this;
+    }
+
+    public JGooGl.Builder useKey(String apiKey) {
+      instance.defaultContext.apiKey = apiKey;
+      return this;
+    }
+
+    public JGooGl.Builder useVersion(GooGlVersion version) {
+      instance.defaultContext.apiVersion = version;
+      return this;
+    }
+
+    public JGooGl.Builder useProjection(GooGlProjection projection) {
+      instance.defaultContext.projection = projection;
+      return this;
+    }
+
+    public JGooGl get() {
+      return instance;
+    }
+  }
 }
