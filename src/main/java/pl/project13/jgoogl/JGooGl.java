@@ -68,11 +68,11 @@ public class JGooGl {
   }
 
   public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
-    String responseBody = requestBuilder.apiKey(apiKey)
-                                        .apiVersion(apiVersion)
-                                        .projection(projection)
-                                        .shorten(longUrl)
-                                        .execute();
+    RequestBuilder builder = requestBuilder.apiKey(apiKey)
+                                           .apiVersion(apiVersion)
+                                           .projection(projection)
+                                           .shorten(longUrl);
+    String responseBody = builder.execute();
 
     return gson.fromJson(responseBody, ShortenResponse.class);
   }
@@ -80,10 +80,10 @@ public class JGooGl {
   public ExpandResponse expand(String shortUrl) throws IOException, ExecutionException, InterruptedException {
     throwIfNotGooGlUrl(shortUrl);
 
-    String responseBody = requestBuilder.apiKey(apiKey)
-                                        .projection(projection)
-                                        .expand(shortUrl)
-                                        .execute();
+    RequestBuilder builder = requestBuilder.apiKey(apiKey)
+                                           .projection(projection)
+                                           .expand(shortUrl);
+    String responseBody = builder.execute();
 
     return parseExpandResponse(responseBody);
   }
