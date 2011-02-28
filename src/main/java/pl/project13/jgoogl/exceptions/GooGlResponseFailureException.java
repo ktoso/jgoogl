@@ -24,6 +24,6 @@ public class GooGlResponseFailureException extends RuntimeException {
   }
 
   public GooGlResponseFailureException(String message, Response response) {
-    super(message + "\n" + response.getHeaders());
+    super(message + " Status: " + response.getStatusCode() + " - " + response.getStatusText());
   }
 }

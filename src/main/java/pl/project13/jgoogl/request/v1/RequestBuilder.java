@@ -58,7 +58,7 @@ public class RequestBuilder {
 
   public RequestBuilder shorten(String longUrl) {
     params.remove(SHORT_URL);
-    params.put(LONG_URL, urlEncode(longUrl));
+    params.put(LONG_URL, longUrl);
     return this;
   }
 
@@ -82,13 +82,12 @@ public class RequestBuilder {
   public String execute() throws IOException, ExecutionException, InterruptedException {
     BoundRequestBuilder builder = prepareBuilder();
 
-    log.info("Calling: " + builder.build().toString());
     Future<Response> futureResponse = builder.execute();
     Response response = futureResponse.get();
 
     String responseBody = response.getResponseBody();
     if (!hasText(responseBody)) {
-      throw new GooGlResponseFailureException("Got empty response", response);
+      throw new GooGlResponseFailureException("Got invalid response.", response);
     }
     return responseBody;
   }
@@ -96,11 +95,17 @@ public class RequestBuilder {
   private BoundRequestBuilder prepareBuilder() {
     BoundRequestBuilder builder;
 
-    if (shouldPost()) {
-      builder = asyncHttpClient.preparePost(version.serviceUrl)
-                               .setBody(gson.toJson(params));
+    if (shouldUsePost()) {
+      String url = version.serviceUrl;
+      String data = gson.toJson(params);
+      log.info("POST: " + url + " with data: " + data);
+
+      builder = asyncHttpClient.preparePost(url)
+                               .setBody(data);
     } else {
-      builder = asyncHttpClient.prepareGet(prepareGetUrl(version.serviceUrl));
+      String url = prepareGetUrl(version.serviceUrl);
+      log.info("GET: " + url + " with params: " + PROJECTION + " = " + projection.urlParamValue);
+      builder = asyncHttpClient.prepareGet(url);
     }
 
     builder.addHeader("Content-type", APP_JSON)
@@ -114,7 +119,7 @@ public class RequestBuilder {
 
     String queryUrl = serviceUrl + "?" + Joiner.on("&").withKeyValueSeparator("=").join(params);
 
-    params = newHashMap();
+    params = newHashMap(); // reset params
 
     return queryUrl;
   }
@@ -130,7 +135,7 @@ public class RequestBuilder {
     return encode;
   }
 
-  private boolean shouldPost() {
+  private boolean shouldUsePost() {
     return params.containsKey(LONG_URL); //todo not clean intention, make this better code
   }
 }

@@ -17,7 +17,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class DeserializationTest {
 
-  Logger log = Logger.getLogger(this.getClass());
+  Logger log = Logger.getLogger(getClass());
 
   Gson gson = GooGlGsonProvider.get();
 

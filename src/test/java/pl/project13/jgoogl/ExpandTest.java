@@ -15,7 +15,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class ExpandTest {
 
-  Logger log = Logger.getLogger(this.getClass());
+  Logger log = Logger.getLogger(getClass());
 
   JGooGl jGooGl = JGooGl.withoutKey();
 

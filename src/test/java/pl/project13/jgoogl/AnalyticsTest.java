@@ -16,7 +16,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class AnalyticsTest {
 
-  Logger log = Logger.getLogger(this.getClass());
+  Logger log = Logger.getLogger(getClass());
 
   JGooGl jGooGl = JGooGl.withoutKey();
 
@@ -36,16 +36,18 @@ public class AnalyticsTest {
     assertThat(analyticsResponse.getStatus()).isEqualTo(GooGlStatus.OK);
     assertThat(analyticsResponse.getLongUrl()).isEqualTo(longUrl);
     assertThat(analyticsResponse.getKind()).isEqualTo("urlshortener#url");
-    assertThat(analyticsResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
   }
 
   @Test
   public void queryFluentAnalytics() throws Exception {
     ExpandResponse expand = jGooGl.withAnalytics(GooGlProjection.ANALYTICS_FULL).expand(shortenedLongUrl);
 
-    assertThat(expand).isInstanceOf(AnalyticsResponse.class);
+    log.info(expand);
 
+    assertThat(expand).isInstanceOf(AnalyticsResponse.class);
     AnalyticsResponse analyticsResponse = (AnalyticsResponse) expand;
+
     assertThat(analyticsResponse.getAnalytics()).isNotNull();
+    assertThat(analyticsResponse.getLongUrl()).isEqualTo(longUrl);
   }
 }
