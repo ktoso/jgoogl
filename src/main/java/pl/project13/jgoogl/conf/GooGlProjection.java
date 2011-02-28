@@ -11,17 +11,17 @@ package pl.project13.jgoogl.conf;
 public enum GooGlProjection {
 
   /**
-   * Przekaż stałą do metody expandShortcut jeśli interesują cię statystyki kliknięć
+   * Use this projection if you want click statistics
    */
   ANALYTICS_CLICKS("ANALYTICS_CLICKS"),
+
   /**
-   * Przekaż stałą do metody expandShortcut jeśli interesują cię statystyki
-   * odnośnie refererów, przeglądarek i platform systemowych
+   * Use this projection if you want stats about referers, browsers and operating systems
    */
   ANALYTICS_TOP_STRINGS("ANALYTICS_TOP_STRINGS"),
+
   /**
-   * Przekaż stałą do metody expandShortcut jeśli interesują cię
-   * wszystkie statystyki powiązane ze skrótem
+   * Use this projection to get all statistics  (CLICKS + TOP_STRINGS)
    */
   ANALYTICS_FULL("FULL");
 
