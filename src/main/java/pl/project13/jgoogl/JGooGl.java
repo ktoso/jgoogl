@@ -29,14 +29,14 @@ public class JGooGl {
   private GooGlVersion    apiVersion = GooGlVersion.V1;
   private GooGlProjection projection = GooGlProjection.ANALYTICS_CLICKS;
 
-  private JGooGl() {
-    this(GooGlGsonProvider.get(), new AsyncHttpClient());
-    requestBuilder = new RequestBuilder(asyncHttpClient, gson);
-  }
-
   private JGooGl(Gson gson, AsyncHttpClient asyncHttpClient) {
     this.gson = gson;
     this.asyncHttpClient = asyncHttpClient;
+  }
+
+  private JGooGl() {
+    this(GooGlGsonProvider.get(), new AsyncHttpClient());
+    requestBuilder = new RequestBuilder(asyncHttpClient, gson);
   }
 
   private JGooGl(String apiKey) {
