@@ -13,7 +13,7 @@ Using **jGooGl** is really easy, take a look at these few examples.
 
 1. Instance creation
 
-1.2 Simple instance creation:
+1.1 Simple instance creation:
 
         // you may use jGooGl without an API key
         JGooGl jGooGl = JGooGl.withoutKey();
@@ -43,9 +43,13 @@ Using **jGooGl** is really easy, take a look at these few examples.
 
 
         // we have no key here
+        jGooGl = new JGooGl.withoutKey();
 
-        // at any time you may switch back and forth between those two:
-        jGooGl= jGooGl.addKey("theKeyOfTwilight").removeKey();
+        // now you can add a key for this request, but note that it will NOT be kept until the next request.
+        jGooGl.addKey(apiKey).expand(someUrl);
+
+        // so after the above, the bellow call would still work as the "withoutKey" version:
+        jGooGl.expand(someUrl); //even after the above this will NOT use apiKey
 
 2. Querying the service
 
