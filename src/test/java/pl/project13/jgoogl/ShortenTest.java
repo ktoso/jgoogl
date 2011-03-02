@@ -21,6 +21,8 @@ public class ShortenTest {
   String longUrl          = "http://www.project13.pl/"; // note the trailing slash, Google will add it in their response anyways
   String shortenedLongUrl = "http://goo.gl/ZA9Yx"; // the above should be shortened to this url
 
+  public static final String EXPECTED_SHORTENER_KIND = "urlshortener#url";
+
   @Test
   public void shouldShortenProperly() throws Exception {
     ShortenResponse shortResponse = jGooGl.shorten(longUrl);
@@ -30,7 +32,7 @@ public class ShortenTest {
     assertThat(shortResponse).isNotNull();
     assertThat(shortResponse.hasErrors()).isFalse();
     assertThat(shortResponse.getLongUrl()).isEqualTo(longUrl);
-    assertThat(shortResponse.getKind()).isEqualTo("urlshortener#url");
+    assertThat(shortResponse.getKind()).isEqualTo(EXPECTED_SHORTENER_KIND);
     assertThat(shortResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
   }
 }
