@@ -11,9 +11,9 @@ Usage examples
 --------------
 Using **jGooGl** is really easy, take a look at these few examples.
 
-1. Instance creation
-
-1.1 Simple instance creation:
+Instance creation
+--------------
+**Simple instance creation:**
 
         // you may use jGooGl without an API key
         JGooGl jGooGl = JGooGl.withoutKey();
@@ -21,9 +21,9 @@ Using **jGooGl** is really easy, take a look at these few examples.
         // or with (THIS IS THE BETTER CHOICE)
         JGooGl jGooGl = JGooGl.withKey("mySuperAwesomeKey");
 
-1.2 Creating an instance using the Builder:
-    You may want to create an jGooGl instance that would use a mocked out httpclient or specify what version etc it should use.
-    That's what the JGooGlBuilder (or JGooGl.Builder) is here for, here's a few examples how you may use it:
+**Creating an instance using the Builder:**
+You may want to create an jGooGl instance that would use a mocked out httpclient or specify what version etc it should use.
+That's what the JGooGlBuilder (or JGooGl.Builder) is here for, here's a few examples how you may use it:
 
         // a simple example of JGooGlBuilder
         jGooGl = new JGooGlBuilder().useKey("my-secret-key").get();
@@ -36,11 +36,9 @@ Using **jGooGl** is really easy, take a look at these few examples.
                                      .useProjection(GooGlProjection.ANALYTICS_FULL)
                                      .get();
 
-
-1.3 Gotcha's about what the state of an jGooGl instance is during it's lifetime.
-    Please note that what you create will be the "Default" behaviour of JGooGl, to which it will fallback
-    after executing some action. For example:
-
+**Gotcha's about what the state of an jGooGl instance is during it's life-time.**
+Please note that what you create will be the "Default" behaviour of JGooGl, to which it will fallback
+after executing some action. For example:
 
         // we have no key here
         jGooGl = new JGooGl.withoutKey();
@@ -51,7 +49,8 @@ Using **jGooGl** is really easy, take a look at these few examples.
         // so after the above, the bellow call would still work as the "withoutKey" version:
         jGooGl.expand(someUrl); //even after the above this will NOT use apiKey
 
-2. Querying the service
+Shorten()
+--------------
 
         ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
 
@@ -61,7 +60,10 @@ Using **jGooGl** is really easy, take a look at these few examples.
 
         jGooGl.shorten("http://project13.pl").getShortUrl();
 
-3. You can have statistics queried for each, or just for one query done on on particulair jGooGl instance
+Expand() and statistics
+--------------
+You can have statistics queried for each, or just for one query done on on particulair jGooGl instance
+
        jGooGl.alwaysWithAnalytics(ALL)
              .expand(url);                      // will make each expand query on 
        (AnalyticsResponse) jGooGl.expand(url);  // this instance fetch ALL analytics details
@@ -75,9 +77,11 @@ This obviously sux, so here's how to avoid it:
         AnalyticsResponse response = jGooGl.expandWithAnalytics(url);
 
 Instead of the alwaysWith method, there's also an with\* method family that will only use the setting on the following query.
+
         // the 'just this time' version would look like this
         jGooGl.withAnalytics(ALL).expand(url)
-4. The "one-liner" apparoach
+
+The "one-liner" apparoach would be:
 
         String short = JGooGl.withKey("toHyruleCastle").expand("shorten").url();
 
