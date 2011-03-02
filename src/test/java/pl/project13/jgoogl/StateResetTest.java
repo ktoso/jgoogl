@@ -4,13 +4,12 @@ import com.ning.http.client.AsyncHttpClient;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import pl.project13.jgoogl.request.v1.RequestBuilder;
 
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
@@ -48,8 +47,9 @@ public class StateResetTest {
 
     // should only use key once, in first query
     verify(requestBuilderSpy, times(2)).apiKey(anyString());
-    verify(requestBuilderSpy).apiKey(sampleKey);
-    verify(requestBuilderSpy).apiKey(jGooGl.defaultContext.apiKey);
+    InOrder inOrder = inOrder(requestBuilderSpy);
+    inOrder.verify(requestBuilderSpy).apiKey(sampleKey);
+    inOrder.verify(requestBuilderSpy).apiKey(jGooGl.defaultContext.apiKey);
   }
 
 }
