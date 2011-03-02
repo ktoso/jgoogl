@@ -11,13 +11,38 @@ Usage examples
 --------------
 Using **jGooGl** is really easy, take a look at these few examples.
 
-1. Instance creation:
+1. Instance creation
+
+1.2 Simple instance creation:
 
         // you may use jGooGl without an API key
         JGooGl jGooGl = JGooGl.withoutKey();
 
         // or with (THIS IS THE BETTER CHOICE)
         JGooGl jGooGl = JGooGl.withKey("mySuperAwesomeKey");
+
+1.2 Creating an instance using the Builder:
+    You may want to create an jGooGl instance that would use a mocked out httpclient or specify what version etc it should use.
+    That's what the JGooGlBuilder (or JGooGl.Builder) is here for, here's a few examples how you may use it:
+
+        // a simple example of JGooGlBuilder
+        jGooGl = new JGooGlBuilder().useKey("my-secret-key").get();
+
+        // and another example showcasing all methods:
+        jGooGl = new JGooGl.Builder().useSupplied(new Gson())
+                                     .useSupplied(new AsyncHttpClient())
+                                     .useKey(apiKey)
+                                     .useVersion(GooGlVersion.V1)
+                                     .useProjection(GooGlProjection.ANALYTICS_FULL)
+                                     .get();
+
+
+1.3 Gotcha's about what the state of an jGooGl instance is during it's lifetime.
+    Please note that what you create will be the "Default" behaviour of JGooGl, to which it will fallback
+    after executing some action. For example:
+
+
+        // we have no key here
 
         // at any time you may switch back and forth between those two:
         jGooGl= jGooGl.addKey("theKeyOfTwilight").removeKey();

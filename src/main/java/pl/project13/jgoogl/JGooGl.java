@@ -51,22 +51,7 @@ public class JGooGl {
     defaultContext.apiKey = apiKey;
   }
 
-  public JGooGl addKey(String key) {
-    defaultContext.apiKey = key;
-    return this;
-  }
-
-  public JGooGl removeKey() {
-    defaultContext.apiKey = null;
-    return this;
-  }
-
-  public JGooGl onVersion(GooGlVersion version) {
-    defaultContext.apiVersion = version;
-    return this;
-  }
-
-  /* FACTORY METHODS */
+/* FACTORY METHODS */
 
   public static JGooGl withKey(String key) {
     return new JGooGl(key);
@@ -74,6 +59,23 @@ public class JGooGl {
 
   public static JGooGl withoutKey() {
     return new JGooGl();
+  }
+
+  /* TEMPORARY INSTANCE MODIFICATION METHODS */
+
+  public JGooGl onKey(String key) {
+    defaultContext.apiKey = key;
+    return this;
+  }
+
+  public JGooGl onNoKey() {
+    defaultContext.apiKey = null;
+    return this;
+  }
+
+  public JGooGl onVersion(GooGlVersion version) {
+    defaultContext.apiVersion = version;
+    return this;
   }
 
   /* INSTANCE METHODS */

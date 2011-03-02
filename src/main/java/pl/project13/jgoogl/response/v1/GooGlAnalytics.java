@@ -18,8 +18,8 @@ import java.util.List;
  * @author Konrad Malawski
  */
 public class GooGlAnalytics {
-  Long shortUrlClicks;
-  Long longUrlClicks;
+  Long             shortUrlClicks;
+  Long             longUrlClicks;
   List<CountAndId> referrers;
   List<CountAndId> countries;
   List<CountAndId> browsers;

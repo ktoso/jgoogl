@@ -128,6 +128,6 @@ public class AnalyticsResponse extends ExpandResponse {
         ", longUrl='" + longUrl + '\'' +
         ", status='" + status + '\'' +
         ", error=" + error +
-        "} " ;
+        "} ";
   }
 }

@@ -1,19 +1,15 @@
 package pl.project13.jgoogl.utils;
 
-import com.google.common.base.Charsets;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.Response;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static pl.project13.jgoogl.utils.StringUtils.hasText;
 
 /**

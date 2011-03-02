@@ -6,7 +6,7 @@ package pl.project13.jgoogl.response.v1;
  * @author Konrad Malawski
  */
 public class CountAndId {
-  private Long count;
+  private Long   count;
   private String id;
 
   public CountAndId() {

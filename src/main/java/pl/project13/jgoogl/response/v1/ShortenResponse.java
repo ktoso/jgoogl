@@ -17,8 +17,8 @@ public class ShortenResponse extends GooGlResponse {
 
   @SerializedName("id")
   private String shortUrl = "";
-  private String longUrl = "";
-  private String kind    = "";
+  private String longUrl  = "";
+  private String kind     = "";
 
   public ShortenResponse() {
   }
@@ -34,6 +34,7 @@ public class ShortenResponse extends GooGlResponse {
   /**
    * Id is the short URL that expands to the long URL you provided. If your request includes an auth token,
    * then this URL will be unique. If not, then it might be reused from a previous request to shorten the same URL.
+   *
    * @return the shortUrl, described above
    */
   public String getShortUrl() {

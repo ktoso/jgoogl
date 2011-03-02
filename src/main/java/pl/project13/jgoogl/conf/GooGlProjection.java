@@ -2,7 +2,7 @@ package pl.project13.jgoogl.conf;
 
 /**
  * Date: 1/16/11
- *
+ * <p/>
  * Can be used to perform analytics lookup queries on urls.
  * Each method is described in details bellow.
  *
