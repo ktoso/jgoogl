@@ -1,5 +1,6 @@
 package pl.project13.jgoogl;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 import com.ning.http.client.AsyncHttpClient;
 import pl.project13.jgoogl.conf.GooGlProjection;
@@ -25,14 +26,14 @@ public class JGooGl {
   private AsyncHttpClient asyncHttpClient;
   private RequestBuilder  requestBuilder;
 
-  private class JGooGlContext {
+  class JGooGlContext {
     String          apiKey     = null;
     GooGlVersion    apiVersion = GooGlVersion.V1;
     GooGlProjection projection = GooGlProjection.ANALYTICS_CLICKS;
   }
 
-  private JGooGlContext defaultContext = new JGooGlContext();
-  private JGooGlContext flowContext    = new JGooGlContext();
+  @VisibleForTesting JGooGlContext defaultContext = new JGooGlContext();
+  @VisibleForTesting JGooGlContext flowContext    = new JGooGlContext();
 
   /* CONSTRUCTORS */
 
@@ -51,7 +52,7 @@ public class JGooGl {
     defaultContext.apiKey = apiKey;
   }
 
-/* FACTORY METHODS */
+  /* FACTORY METHODS */
 
   public static JGooGl withKey(String key) {
     return new JGooGl(key);
@@ -64,17 +65,17 @@ public class JGooGl {
   /* TEMPORARY INSTANCE MODIFICATION METHODS */
 
   public JGooGl onKey(String key) {
-    defaultContext.apiKey = key;
+    flowContext.apiKey = key;
     return this;
   }
 
   public JGooGl onNoKey() {
-    defaultContext.apiKey = null;
+    flowContext.apiKey = null;
     return this;
   }
 
   public JGooGl onVersion(GooGlVersion version) {
-    defaultContext.apiVersion = version;
+    flowContext.apiVersion = version;
     return this;
   }
 
@@ -141,6 +142,16 @@ public class JGooGl {
     if (!(url.startsWith("goo.gl/") || url.startsWith("http://www.goo.gl/") || url.startsWith("http://goo.gl/"))) {
       throw new InvalidGooGlUrlException("It seems that the url: '" + url + "' is invalid...");
     }
+  }
+
+  @VisibleForTesting
+  public void setRequestBuilder(RequestBuilder requestBuilder) {
+    this.requestBuilder = requestBuilder;
+  }
+
+  @VisibleForTesting
+  public RequestBuilder getRequestBuilder() {
+    return requestBuilder;
   }
 
   public static class Builder {

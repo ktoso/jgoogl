@@ -1,13 +1,17 @@
 package pl.project13.jgoogl;
 
+import com.ning.http.client.AsyncHttpClient;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
-import pl.project13.jgoogl.conf.GooGlProjection;
-import pl.project13.jgoogl.response.v1.AnalyticsResponse;
-import pl.project13.jgoogl.response.v1.ExpandResponse;
-import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
+import org.mockito.Mockito;
+import pl.project13.jgoogl.request.v1.RequestBuilder;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
  * Date: 1/16/11
@@ -18,36 +22,34 @@ public class StateResetTest {
 
   Logger log = Logger.getLogger(getClass());
 
-  JGooGl jGooGl = JGooGl.withoutKey();
+  JGooGl         jGooGl         = null;
+  RequestBuilder requestBuilderSpy = null;
 
   // test data
-  String longUrl          = "http://www.project13.pl/"; // note the trailing slash, Google will add it in their response anyways
-  String shortenedLongUrl = "http://goo.gl/ZA9Yx"; // the above should be shortened to this url
+  String longUrl   = "http://www.project13.pl/"; // note the trailing slash, Google will add it in their response anyways
+  String sampleKey = "sample-api-key";
 
-  @Test
-  public void shouldExpandProperly() throws Exception {
-    AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl);
+  @Before
+  public void setUp() throws Exception {
+    AsyncHttpClient asyncHttpClient = Mockito.mock(AsyncHttpClient.class);
+    jGooGl = new JGooGl.Builder().useSupplied(asyncHttpClient).get();
 
-    log.info("Deserialized response: " + analyticsResponse);
-
-    assertThat(analyticsResponse).isNotNull();
-    assertThat(analyticsResponse.hasErrors()).isFalse();
-    assertThat(analyticsResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
-    assertThat(analyticsResponse.getStatus()).isEqualTo(GooGlStatus.OK);
-    assertThat(analyticsResponse.getLongUrl()).isEqualTo(longUrl);
-    assertThat(analyticsResponse.getKind()).isEqualTo(EXPECTED_SHORTENER_KIND);
+    requestBuilderSpy = spy(jGooGl.getRequestBuilder());
+    jGooGl.setRequestBuilder(requestBuilderSpy);
   }
 
   @Test
-  public void queryFluentAnalytics() throws Exception {
-    ExpandResponse expand = jGooGl.withAnalytics(GooGlProjection.ANALYTICS_FULL).expand(shortenedLongUrl);
+  public void shouldUseKeyJustOnce() throws Exception {
+    // given
+    log.info("calling with key...");
+    jGooGl.onKey(sampleKey).shorten(longUrl);
+    log.info("calling without key...");
+    jGooGl.shorten(longUrl);
 
-    log.info(expand);
-
-    assertThat(expand).isInstanceOf(AnalyticsResponse.class);
-    AnalyticsResponse analyticsResponse = (AnalyticsResponse) expand;
-
-    assertThat(analyticsResponse.getAnalytics()).isNotNull();
-    assertThat(analyticsResponse.getLongUrl()).isEqualTo(longUrl);
+    // should only use key once, in first query
+    verify(requestBuilderSpy, times(2)).apiKey(anyString());
+    verify(requestBuilderSpy).apiKey(sampleKey);
+    verify(requestBuilderSpy).apiKey(jGooGl.defaultContext.apiKey);
   }
+
 }

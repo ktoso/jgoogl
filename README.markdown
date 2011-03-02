@@ -68,7 +68,7 @@ Using **jGooGl** is really easy, take a look at these few examples.
                                                 // don't over use this if you dont need it though
 
 There is a small catch there, although: `.withAnalytics().expand()` does return `AnalyticsResponse`
-and no casting is neededm if you'd use it like above - explicitly on jGooGl you'd have to do an explicite cast.
+and no casting is needed if you'd use it like above - explicitly on jGooGl you'd have to do an explicite cast.
 This obviously sux, so here's how to avoid it:
        
         // As no analytics mode is given, it will re-use the last used mode, or fallback to NONE
