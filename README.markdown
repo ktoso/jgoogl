@@ -65,10 +65,20 @@ Maven repo
 ----------
 You may use **jGooGl** with your maven projects, just add:
 
-    <repository>
-        <id>...</id>
-        <name>...</name>
-        <url>...</url>
-    </repository>
+    <repositories>
+        <!-- ... -->
+        <repository>
+
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>pl.project13.jgoogl</groupId>
+            <artifactId>jgoogl</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
 
 I will be adding jGooGl to Sonatype Maven repository when it's finished - please look forward to it! :-)
