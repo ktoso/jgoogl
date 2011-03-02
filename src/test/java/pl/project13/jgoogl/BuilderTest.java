@@ -17,7 +17,7 @@ public class BuilderTest {
 
   @Test
   public void shouldUseSuppliedAsyncHttpClient() throws Exception {
-
+    AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
   }
 
   @Test
@@ -36,5 +36,11 @@ public class BuilderTest {
     JGooGl jGooGl = new JGooGl.Builder()
         .useKey(apiKey)
         .get();
+  }
+
+  @Test
+  public void testStaticFactories() throws Exception {
+    JGooGl.withKey("random-key");
+    JGooGl.withoutKey();
   }
 }

@@ -76,6 +76,8 @@ public class JGooGl {
     return new JGooGl();
   }
 
+  /* INSTANCE METHODS */
+
   public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
     try {
       RequestBuilder builder = requestBuilder.apiKey(flowContext.apiKey)
@@ -135,7 +137,7 @@ public class JGooGl {
 
   private void throwIfNotGooGlUrl(String url) {
     if (!(url.startsWith("goo.gl/") || url.startsWith("http://www.goo.gl/") || url.startsWith("http://goo.gl/"))) {
-      throw new InvalidGooGlUrlException("It seems that the url: '" + url + "");
+      throw new InvalidGooGlUrlException("It seems that the url: '" + url + "' is invalid...");
     }
   }
 
