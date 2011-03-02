@@ -46,7 +46,6 @@ public class StateResetTest {
     jGooGl.shorten(longUrl);
 
     // should only use key once, in first query
-    verify(requestBuilderSpy, times(2)).apiKey(anyString());
     InOrder inOrder = inOrder(requestBuilderSpy);
     inOrder.verify(requestBuilderSpy).apiKey(sampleKey);
     inOrder.verify(requestBuilderSpy).apiKey(jGooGl.defaultContext.apiKey);
