@@ -79,6 +79,10 @@ public class JGooGl {
     return this;
   }
 
+  public JGooGlWithAnalytics onProjection(GooGlProjection projection){
+    return withAnalytics(projection);
+  }
+
   /* API METHODS */
 
   public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
@@ -103,35 +107,36 @@ public class JGooGl {
                                              .projection(flowContext.projection)
                                              .expand(shortUrl);
       String responseBody = builder.execute();
+      ExpandResponse expandResponse = parseExpandResponse(responseBody);
 
-      return parseExpandResponse(responseBody);
+      return expandResponse;
     } finally {
       clearFlowContext();
     }
   }
 
-  public JGooGlWithAnalytics withAnalytics(GooGlProjection projection) {
-    flowContext.projection = projection;
-    return new JGooGlWithAnalytics(this);
-  }
-
   public AnalyticsResponse analyticsFor(String shortUrl) throws IOException, ExecutionException, InterruptedException {
-    return analyticsFor(shortUrl, GooGlProjection.ANALYTICS_FULL);
+    return analyticsFor(shortUrl, defaultContext.projection);
   }
 
   public AnalyticsResponse analyticsFor(String shortUrl, GooGlProjection projection) throws IOException, ExecutionException, InterruptedException {
-    withAnalytics(projection);
-    return (AnalyticsResponse) expand(shortUrl);
+    return withAnalytics(projection).expand(shortUrl);
+  }
+
+  public JGooGlWithAnalytics withAnalytics(GooGlProjection projection) {
+    this.flowContext.projection = projection;
+    return new JGooGlWithAnalytics(this);
   }
 
   /* HELPER METHODS */
 
   private ExpandResponse parseExpandResponse(String responseBody) {
-    if (flowContext.projection == GooGlProjection.ANALYTICS_CLICKS) {
-      return gson.fromJson(responseBody, ExpandResponse.class);
-    } else {
+    // todo better granulation of classes
+//    if (flowContext.projection == GooGlProjection.ANALYTICS_CLICKS) {
+//      return gson.fromJson(responseBody, AnalyticsResponse.class);
+//    } else {
       return gson.fromJson(responseBody, AnalyticsResponse.class);
-    }
+//    }
   }
 
   private void throwIfNotGooGlUrl(String url) {

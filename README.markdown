@@ -44,6 +44,8 @@ Using **jGooGl** is really easy, take a look at these few examples.
 
 ## Instance creation ##
 ### Simple instance creation ###
+There are two ways of creating an jGooGl instance, the first one does not give you major tweaking
+abilities but it's super easy to use:
 
         // you may use jGooGl without an API key
         JGooGl jGooGl = JGooGl.withoutKey();
@@ -52,7 +54,7 @@ Using **jGooGl** is really easy, take a look at these few examples.
         JGooGl jGooGl = JGooGl.withKey("mySuperAwesomeKey");
 
 ### Creating an instance using the Builder ###
-You may want to create an jGooGl instance that would use a mocked out httpclient or specify what version etc it should use.
+As you may want to create an jGooGl instance that would use a mocked out httpclient or specify what version etc it should use.
 That's what the JGooGlBuilder (or JGooGl.Builder) is here for, here's a few examples how you may use it:
 
         // a simple example of JGooGlBuilder
@@ -99,16 +101,41 @@ Before we go into how expand() can and is used to fetch an AnalyticsResponse let
 
       AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_FULL);
 
-That's quite nice, but in case you'd like to stick to your expand() method calls here's a nice **type-safe** way of doing so:
+That's quite nice, but in case you'd like to stick to your expand() method calls here's a nice **type-safe** way of doing so.
+(By type-safe I mean that even if you had analyticsMode set in the builder, and call expands on the jGooGl instance, it will have the details in it,
+in fact you could try to cast ExpandResponse to AnalyticsResponse "sometimes", the bellow apparoach takes away the headache of casting stuff by hand... :-))
 
-      AnalyticsResponse analyticsResponse = jGooGl.withAnalytics(ANALYTICS_FULL).expand();
+      AnalyticsResponse analyticsResponse = jGooGl.withAnalytics(ANALYTICS_FULL).expand(myShortUrl);
 
 This is possible because withAnalytics creates a JGooGlWithAnalytics instance which will delegate all calls to the Real JGooGl instance,
 but take care of the analytics casting where applicable.
 
 ### Chaining in-line JGooGl configuration changes ###
 As you've already seen, there's a `JGooGlBuilder` there for you to easily create a JGooGl instance working on some specific parameters etc.
-But there is a nice way of calling some shortens without using the "default" ("set at builder time")
+But there is a nice way of calling some shortens without using the "default" ("set at builder time").
+
+The values set during construction will always be used if you don't use any of the bellow methods,
+also the methods bellow only set the variable "for the current execution". Let's see some examples:
+
+      JGooGl jGooGl = JGooGl.withoutKey();
+
+      jGooGl.shorten(url); // this calls without any key
+
+      jGooGl.onKey(myKey).shorten(url); // this calls using the myKey as key
+
+      // but the next execution will still be using the "default key"
+      jGooGl.shorten(url); // this calls without any key
+
+This way you're free to assume that the defaults stay defaults during your apps life-time,
+and no-one will break it by setting some weird value in it.
+
+The same can be done with all other parameters, like this:
+     jGooGl.onKey(myKey).shorten();
+     jGooGl.onNoKey().shorten();
+     jGooGl.onVersion(GooGlVersion.V1).shorten();
+
+     // and
+     jGooGl.onProjection(GooGlProjection.ANALYTICS_FULL).expand(longUrl);
 
 Frequently Asked Questions
 --------------------------

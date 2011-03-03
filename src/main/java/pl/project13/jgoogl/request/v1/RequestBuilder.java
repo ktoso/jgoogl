@@ -89,6 +89,8 @@ public class RequestBuilder {
     if (!hasText(responseBody)) {
       throw new GooGlResponseFailureException("Got invalid response.", response);
     }
+    log.info("GOT: " + responseBody);
+
     return responseBody;
   }
 

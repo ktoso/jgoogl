@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class JGooGlWithAnalytics {
 
-  private JGooGl jGooGlDelegate;
+  private JGooGl          jGooGlDelegate;
 
   JGooGlWithAnalytics(JGooGl jGooGlDelegate) {
     this.jGooGlDelegate = jGooGlDelegate;

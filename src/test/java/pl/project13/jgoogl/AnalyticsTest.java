@@ -2,11 +2,12 @@ package pl.project13.jgoogl;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import pl.project13.jgoogl.conf.GooGlProjection;
 import pl.project13.jgoogl.response.v1.AnalyticsResponse;
 import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.project13.jgoogl.conf.GooGlProjection.ANALYTICS_CLICKS;
+import static pl.project13.jgoogl.conf.GooGlProjection.ANALYTICS_FULL;
 
 /**
  * Date: 1/16/11
@@ -41,7 +42,18 @@ public class AnalyticsTest {
 
   @Test
   public void queryFluentAnalytics() throws Exception {
-    AnalyticsResponse expand = jGooGl.withAnalytics(GooGlProjection.ANALYTICS_FULL).expand(shortenedLongUrl);
+    AnalyticsResponse expand = jGooGl.withAnalytics(ANALYTICS_FULL).expand(shortenedLongUrl);
+
+    log.info(expand);
+
+    assertThat(expand).isInstanceOf(AnalyticsResponse.class);
+    assertThat(expand.getAnalytics()).isNotNull();
+    assertThat(expand.getLongUrl()).isEqualTo(longUrl);
+  }
+
+  @Test
+  public void shouldGetOnlyClicksAnalytics() throws Exception {
+    AnalyticsResponse expand = jGooGl.withAnalytics(ANALYTICS_CLICKS).expand(shortenedLongUrl);
 
     log.info(expand);
 
