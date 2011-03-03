@@ -2,15 +2,14 @@ jGooGl - Fluent goo.gl API Java Wrapper
 =======================================
 
 General information
-===================
-
+-------------------
 **jGooGl** is an simple, yet pleasant to use, wrapper around Google's goo.gl service, and it's API,
 which is documented here: http://code.google.com/apis/urlshortener/overview.html
 
 Currently there only is one version out - v1, but if something new should be added, be sure I'll update this project :-)
 
 Maven repository
-================
+----------------
 Add this repository for **releases** of this plugin:
 
         <repository>
@@ -19,7 +18,7 @@ Add this repository for **releases** of this plugin:
             <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
 
-or use this one for it's **snapshots**:
+**or** use this one for it's **snapshots**:
 
         <repository>
             <id>sonatype-snapshots</id>
@@ -38,16 +37,15 @@ Then just add it to your dependencies:
             </dependency>
         </dependencies>
 
-It'll soon be available from maven central, I hope by the way... :-)
+I also hope to make it available from Maven Central, we'll se... ;-)
 
 
 Usage guide
-==============
+-----------
 Using **jGooGl** is really easy, take a look at these few examples.
 
-Instance creation
---------------
-**Simple instance creation:**
+## Instance creation ##
+### Simple instance creation ###
 
         // you may use jGooGl without an API key
         JGooGl jGooGl = JGooGl.withoutKey();
@@ -55,7 +53,7 @@ Instance creation
         // or with (THIS IS THE BETTER CHOICE)
         JGooGl jGooGl = JGooGl.withKey("mySuperAwesomeKey");
 
-**Creating an instance using the Builder:**
+### Creating an instance using the Builder ###
 You may want to create an jGooGl instance that would use a mocked out httpclient or specify what version etc it should use.
 That's what the JGooGlBuilder (or JGooGl.Builder) is here for, here's a few examples how you may use it:
 
@@ -69,39 +67,44 @@ That's what the JGooGlBuilder (or JGooGl.Builder) is here for, here's a few exam
                                      .useVersion(GooGlVersion.V1)
                                      .useProjection(GooGlProjection.ANALYTICS_FULL)
                                      .get();
+## Querying ##
+### Shorten() ###
+Here's how simple you can shorten an URL:
 
-**Gotcha's about what the state of an jGooGl instance is during it's life-time.**
-Please note that what you create will be the "Default" behaviour of JGooGl, to which it will fallback
-after executing some action. For example:
+        // the one-liner style is preferred as it can give you better Typing for expand requests
+        String shortUrl = jGooGl.shorten("http://project13.pl").getShortUrl();
 
-        // we have no key here
-        jGooGl = new JGooGl.withoutKey();
-
-        // now you can add a key for this request, but note that it will NOT be kept until the next request.
-        jGooGl.addKey(apiKey).expand(someUrl);
-
-        // so after the above, the bellow call would still work as the "withoutKey" version:
-        jGooGl.expand(someUrl); //even after the above this will NOT use apiKey
-
-Shorten()
---------------
-
+        // you could of course write it like this (and get a few more things out of ShortenResponse)
         ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
+        shortUrl = response.getShortUrl();
 
-        String url = jGooGl.addKey("myapikey")
-                           .expand("http://goo.gl/3X4m913")
-                           .getLongUrl();
+Shortening is really easy and there's not much you can change during using it.
+But please be aware of the "small catch" while using on* methods, it's explained in detail bellow.
 
-        jGooGl.shorten("http://project13.pl").getShortUrl();
+### Expand() ###
+Using this method you can both expand an shortened goo.gl url and query for it's statistics.
+To just query for the ExpandResponse use such code:
 
-Expand() and statistics
---------------
-You can have statistics queried for each, or just for one query done on on particulair jGooGl instance
+       ExpandResponse expandResponse = jGooGl.expand(shortenedLongUrl); // this would be a url like: goo.gl/GOOGLSH
 
-       jGooGl.alwaysWithAnalytics(ALL)
-             .expand(url);                      // will make each expand query on 
-       (AnalyticsResponse) jGooGl.expand(url);  // this instance fetch ALL analytics details
-                                                // don't over use this if you dont need it though
+### Expand() and statistics ###
+
+Before we go into how expand() can and is used to fetch an AnalyticsResponse let's use the two dedicated methods firstL
+
+      // using the default projection (or the one specified during your GooGlBuilder phase)
+      AnalyticsResponse response = jGooGl.analyticsFor(shortenedLongUrl);
+
+      // using the specialized projections
+      AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_CLICKS);
+
+      AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_TOP_STRINGS);
+
+      AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_FULL);
+
+
+
+As AnalyticsResponse is just a ExpandResponse with more details packed into it (that's how the GooGl API returns it anyways)
+there's a small trick here for you to still have **type-safe** Analytics calls. In order to explain
 
 There is a small catch there, although: `.withAnalytics().expand()` does return `AnalyticsResponse`
 and no casting is needed if you'd use it like above - explicitly on jGooGl you'd have to do an explicite cast.
@@ -115,7 +118,7 @@ Instead of the alwaysWith method, there's also an with\* method family that will
         // the 'just this time' version would look like this
         jGooGl.withAnalytics(ALL).expand(url)
 
-The "one-liner" apparoach would be:
+The "one-liner" approach would be:
 
         String short = JGooGl.withKey("toHyruleCastle").expand("shorten").url();
 

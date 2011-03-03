@@ -79,7 +79,7 @@ public class JGooGl {
     return this;
   }
 
-  /* INSTANCE METHODS */
+  /* API METHODS */
 
   public ShortenResponse shorten(String longUrl) throws IOException, ExecutionException, InterruptedException {
     try {
@@ -110,23 +110,9 @@ public class JGooGl {
     }
   }
 
-  private void clearFlowContext() {
-    flowContext.apiKey = defaultContext.apiKey;
-    flowContext.apiVersion = defaultContext.apiVersion;
-    flowContext.projection = defaultContext.projection;
-  }
-
-  private ExpandResponse parseExpandResponse(String responseBody) {
-    if (flowContext.projection == GooGlProjection.ANALYTICS_CLICKS) {
-      return gson.fromJson(responseBody, ExpandResponse.class);
-    } else {
-      return gson.fromJson(responseBody, AnalyticsResponse.class);
-    }
-  }
-
-  public JGooGl withAnalytics(GooGlProjection projection) {
+  public JGooGlWithAnalytics withAnalytics(GooGlProjection projection) {
     flowContext.projection = projection;
-    return this;
+    return new JGooGlWithAnalytics(this);
   }
 
   public AnalyticsResponse analyticsFor(String shortUrl) throws IOException, ExecutionException, InterruptedException {
@@ -138,10 +124,26 @@ public class JGooGl {
     return (AnalyticsResponse) expand(shortUrl);
   }
 
+  /* HELPER METHODS */
+
+  private ExpandResponse parseExpandResponse(String responseBody) {
+    if (flowContext.projection == GooGlProjection.ANALYTICS_CLICKS) {
+      return gson.fromJson(responseBody, ExpandResponse.class);
+    } else {
+      return gson.fromJson(responseBody, AnalyticsResponse.class);
+    }
+  }
+
   private void throwIfNotGooGlUrl(String url) {
     if (!(url.startsWith("goo.gl/") || url.startsWith("http://www.goo.gl/") || url.startsWith("http://goo.gl/"))) {
       throw new InvalidGooGlUrlException("It seems that the url: '" + url + "' is invalid...");
     }
+  }
+
+  private void clearFlowContext() {
+    flowContext.apiKey = defaultContext.apiKey;
+    flowContext.apiVersion = defaultContext.apiVersion;
+    flowContext.projection = defaultContext.projection;
   }
 
   @VisibleForTesting

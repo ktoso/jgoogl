@@ -29,15 +29,7 @@ public class ExpandTest {
   public void shouldExpandProperly() throws Exception {
     ExpandResponse expandResponse = jGooGl.expand(shortenedLongUrl);
 
-    log.info("Deserialized response: " + expandResponse);
-
-    assertThat(expandResponse).isNotNull();
-    assertThat(expandResponse.hasErrors()).isFalse();
-    assertThat(expandResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
-    assertThat(expandResponse.getStatus()).isEqualTo(GooGlStatus.OK);
-    assertThat(expandResponse.getLongUrl()).isEqualTo(longUrl);
-    assertThat(expandResponse.getKind()).isEqualTo(EXPECTED_SHORTENER_KIND);
-    assertThat(expandResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
+    assertValidExpandResponse(expandResponse);
   }
 
   @Test(expected = InvalidGooGlUrlException.class)
@@ -48,6 +40,18 @@ public class ExpandTest {
   @Test(expected = InvalidGooGlUrlException.class)
   public void thisExpandShouldAlsoThrowOnBadUrl() throws Exception {
     jGooGl.expand("http://www.somesite.com/?ww.goo.gl/");
+  }
+
+  private void assertValidExpandResponse(ExpandResponse expandResponse) {
+    log.info("Deserialized response: " + expandResponse);
+
+    assertThat(expandResponse).isNotNull();
+    assertThat(expandResponse.hasErrors()).isFalse();
+    assertThat(expandResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
+    assertThat(expandResponse.getStatus()).isEqualTo(GooGlStatus.OK);
+    assertThat(expandResponse.getLongUrl()).isEqualTo(longUrl);
+    assertThat(expandResponse.getKind()).isEqualTo(EXPECTED_SHORTENER_KIND);
+    assertThat(expandResponse.getShortUrl()).isEqualTo(shortenedLongUrl);
   }
 
 }

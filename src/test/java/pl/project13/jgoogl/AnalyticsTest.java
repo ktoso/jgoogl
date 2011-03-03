@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import pl.project13.jgoogl.conf.GooGlProjection;
 import pl.project13.jgoogl.response.v1.AnalyticsResponse;
-import pl.project13.jgoogl.response.v1.ExpandResponse;
 import pl.project13.jgoogl.response.v1.enums.GooGlStatus;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -42,14 +41,12 @@ public class AnalyticsTest {
 
   @Test
   public void queryFluentAnalytics() throws Exception {
-    ExpandResponse expand = jGooGl.withAnalytics(GooGlProjection.ANALYTICS_FULL).expand(shortenedLongUrl);
+    AnalyticsResponse expand = jGooGl.withAnalytics(GooGlProjection.ANALYTICS_FULL).expand(shortenedLongUrl);
 
     log.info(expand);
 
     assertThat(expand).isInstanceOf(AnalyticsResponse.class);
-    AnalyticsResponse analyticsResponse = (AnalyticsResponse) expand;
-
-    assertThat(analyticsResponse.getAnalytics()).isNotNull();
-    assertThat(analyticsResponse.getLongUrl()).isEqualTo(longUrl);
+    assertThat(expand.getAnalytics()).isNotNull();
+    assertThat(expand.getLongUrl()).isEqualTo(longUrl);
   }
 }
