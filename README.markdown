@@ -87,7 +87,7 @@ To just query for the ExpandResponse use such code:
 
        ExpandResponse expandResponse = jGooGl.expand(shortenedLongUrl); // this would be a url like: goo.gl/GOOGLSH
 
-### Expand() and statistics ###
+### Expand() and Analytics ###
 
 Before we go into how expand() can and is used to fetch an AnalyticsResponse let's use the two dedicated methods firstL
 
@@ -101,26 +101,16 @@ Before we go into how expand() can and is used to fetch an AnalyticsResponse let
 
       AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_FULL);
 
+That's quite nice, but in case you'd like to stick to your expand() method calls here's a nice **type-safe** way of doing so:
 
+      AnalyticsResponse analyticsResponse = jGooGl.withAnalytics(ANALYTICS_FULL).expand();
 
-As AnalyticsResponse is just a ExpandResponse with more details packed into it (that's how the GooGl API returns it anyways)
-there's a small trick here for you to still have **type-safe** Analytics calls. In order to explain
+This is possible because withAnalytics creates a JGooGlWithAnalytics instance which will delegate all calls to the Real JGooGl instance,
+but take care of the analytics casting where applicable.
 
-There is a small catch there, although: `.withAnalytics().expand()` does return `AnalyticsResponse`
-and no casting is needed if you'd use it like above - explicitly on jGooGl you'd have to do an explicite cast.
-This obviously sux, so here's how to avoid it:
-       
-        // As no analytics mode is given, it will re-use the last used mode, or fallback to NONE
-        AnalyticsResponse response = jGooGl.expandWithAnalytics(url);
-
-Instead of the alwaysWith method, there's also an with\* method family that will only use the setting on the following query.
-
-        // the 'just this time' version would look like this
-        jGooGl.withAnalytics(ALL).expand(url)
-
-The "one-liner" approach would be:
-
-        String short = JGooGl.withKey("toHyruleCastle").expand("shorten").url();
+### Chaining in-line JGooGl configuration changes ###
+As you've already seen, there's a `JGooGlBuilder` there for you to easily create a JGooGl instance working on some specific parameters etc.
+But there is a nice way of calling some shortens without using the "default" ("set at builder time")
 
 Frequently Asked Questions
 --------------------------
