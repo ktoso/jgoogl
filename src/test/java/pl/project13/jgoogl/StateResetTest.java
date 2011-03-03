@@ -8,9 +8,8 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 import pl.project13.jgoogl.request.v1.RequestBuilder;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.spy;
 
 /**
  * Date: 1/16/11
@@ -21,7 +20,7 @@ public class StateResetTest {
 
   Logger log = Logger.getLogger(getClass());
 
-  JGooGl         jGooGl         = null;
+  JGooGl         jGooGl            = null;
   RequestBuilder requestBuilderSpy = null;
 
   // test data

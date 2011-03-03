@@ -1,14 +1,48 @@
 jGooGl - Fluent goo.gl API Java Wrapper
 =======================================
+
 General information
--------------------
+===================
+
 **jGooGl** is an simple, yet pleasant to use, wrapper around Google's goo.gl service, and it's API,
 which is documented here: http://code.google.com/apis/urlshortener/overview.html
 
 Currently there only is one version out - v1, but if something new should be added, be sure I'll update this project :-)
 
-Usage examples
---------------
+Maven repository
+================
+Add this repository for **releases** of this plugin:
+
+        <repository>
+            <id>sonatype-releases</id>
+            <name>Sonatype Releases</name>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+
+or use this one for it's **snapshots**:
+
+        <repository>
+            <id>sonatype-snapshots</id>
+            <name>Sonatype Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+
+
+Then just add it to your dependencies:
+
+        <dependencies>
+            <dependency>
+                <groupId>pl.project13.jgoogl</groupId>
+                <artifactId>jgoogl</artifactId>
+                <version>1.0</version>
+            </dependency>
+        </dependencies>
+
+It'll soon be available from maven central, I hope by the way... :-)
+
+
+Usage guide
+==============
 Using **jGooGl** is really easy, take a look at these few examples.
 
 Instance creation
@@ -94,24 +128,6 @@ Frequently Asked Questions
   that has quite a few users - dont hesitate and go for an api key right away, it's explained how to 
   get one here: http://code.google.com/apis/urlshortener/v1/authentication.html#key
 
-Maven repo
-----------
-You may use **jGooGl** with your maven projects, just add:
-
-    <repositories>
-        <!-- ... -->
-        <repository>
-
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>pl.project13.jgoogl</groupId>
-            <artifactId>jgoogl</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
-
-
-I will be adding jGooGl to Sonatype Maven repository when it's finished - please look forward to it! :-)
+License
+-------
+I'm releasing this under the ..... //TODO
