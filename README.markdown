@@ -29,13 +29,11 @@ Add this repository for **releases** of this plugin:
 
 Then just add it to your dependencies:
 
-        <dependencies>
-            <dependency>
-                <groupId>pl.project13.jgoogl</groupId>
-                <artifactId>jgoogl</artifactId>
-                <version>1.0</version>
-            </dependency>
-        </dependencies>
+        <dependency>
+            <groupId>pl.project13.jgoogl</groupId>
+            <artifactId>jgoogl</artifactId>
+            <version>1.0</version>
+        </dependency>
 
 I also hope to make it available from Maven Central, we'll se... ;-)
 
