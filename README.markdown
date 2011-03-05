@@ -1,5 +1,6 @@
 jGooGl - Fluent goo.gl API Java Wrapper
 =======================================
+Quick info - This is yet **under construction** and it's API is not yet stable, if you want to used if in a stable project, wait one week or be sure tu update the project next week :-)
 
 General information
 -------------------
