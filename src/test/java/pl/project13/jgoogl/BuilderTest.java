@@ -16,11 +16,6 @@ public class BuilderTest {
   public String apiKey = "my-secret-key";
 
   @Test
-  public void shouldUseSuppliedAsyncHttpClient() throws Exception {
-    AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-  }
-
-  @Test
   public void testAllMethods() throws Exception {
     JGooGl jGooGl = new JGooGl.Builder()
         .useSupplied(new Gson())

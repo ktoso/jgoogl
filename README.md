@@ -11,32 +11,14 @@ Currently there only is one version out - v1, but if something new should be add
 
 Maven repository
 ----------------
-Add this repository for **releases** of this plugin:
-
-        <repository>
-            <id>sonatype-releases</id>
-            <name>Sonatype Releases</name>
-            <url>https://oss.sonatype.org/content/repositories/releases/</url>
-        </repository>
-
-**or** use this one for it's **snapshots**:
-
-        <repository>
-            <id>sonatype-snapshots</id>
-            <name>Sonatype Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-
-
-Then just add it to your dependencies:
+The library is in maven central (though I implemented it around 3 years ago, I released in 2013 into there ;-)) 
+Just add it to your dependencies:
 
         <dependency>
             <groupId>pl.project13.jgoogl</groupId>
             <artifactId>jgoogl</artifactId>
             <version>1.0</version>
         </dependency>
-
-I also hope to make it available from Maven Central, we'll se... ;-)
 
 
 Usage guide
