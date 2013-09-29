@@ -20,6 +20,7 @@ Just add it to your dependencies:
   <artifactId>jgoogl</artifactId>
   <version>1.0</version>
 </dependency>
+```
 
 
 Usage guide
