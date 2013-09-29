@@ -14,11 +14,12 @@ Maven repository
 The library is in maven central (though I implemented it around 3 years ago, I released in 2013 into there ;-)) 
 Just add it to your dependencies:
 
-        <dependency>
-            <groupId>pl.project13.jgoogl</groupId>
-            <artifactId>jgoogl</artifactId>
-            <version>1.0</version>
-        </dependency>
+```xml
+<dependency>
+  <groupId>pl.project13.jgoogl</groupId>
+  <artifactId>jgoogl</artifactId>
+  <version>1.0</version>
+</dependency>
 
 
 Usage guide
@@ -30,36 +31,44 @@ Using **jGooGl** is really easy, take a look at these few examples.
 There are two ways of creating an jGooGl instance, the first one does not give you major tweaking
 abilities but it's super easy to use:
 
-        // you may use jGooGl without an API key
-        JGooGl jGooGl = JGooGl.withoutKey();
+```java
+  // you may use jGooGl without an API key
+  JGooGl jGooGl = JGooGl.withoutKey();
 
-        // or with (THIS IS THE BETTER CHOICE)
-        JGooGl jGooGl = JGooGl.withKey("mySuperAwesomeKey");
+  // or with (THIS IS THE BETTER CHOICE)
+  JGooGl jGooGl = JGooGl.withKey("mySuperAwesomeKey");
+```
 
 ### Creating an instance using the Builder ###
 As you may want to create an jGooGl instance that would use a mocked out httpclient or specify what version etc it should use.
 That's what the JGooGlBuilder (or JGooGl.Builder) is here for, here's a few examples how you may use it:
 
-        // a simple example of JGooGlBuilder
-        jGooGl = new JGooGlBuilder().useKey("my-secret-key").get();
+```java
+  // a simple example of JGooGlBuilder
+  jGooGl = new JGooGlBuilder().useKey("my-secret-key").get();
 
-        // and another example showcasing all methods:
-        jGooGl = new JGooGl.Builder().useSupplied(new Gson())
-                                     .useSupplied(new AsyncHttpClient())
-                                     .useKey(apiKey)
-                                     .useVersion(GooGlVersion.V1)
-                                     .useProjection(GooGlProjection.ANALYTICS_FULL)
-                                     .get();
+  // and another example showcasing all methods:
+  jGooGl = new JGooGl.Builder()
+    .useSupplied(new Gson())
+    .useSupplied(new AsyncHttpClient())
+    .useKey(apiKey)
+    .useVersion(GooGlVersion.V1)
+    .useProjection(GooGlProjection.ANALYTICS_FULL)
+    .get();
+```
+
 ## Querying ##
 ### Shorten() ###
 Here's how simple you can shorten an URL:
 
-        // the one-liner style is preferred as it can give you better Typing for expand requests
-        String shortUrl = jGooGl.shorten("http://project13.pl").getShortUrl();
+```java
+  // the one-liner style is preferred as it can give you better Typing for expand requests
+  String shortUrl = jGooGl.shorten("http://project13.pl").getShortUrl();
 
-        // you could of course write it like this (and get a few more things out of ShortenResponse)
-        ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
-        shortUrl = response.getShortUrl();
+  // you could of course write it like this (and get a few more things out of ShortenResponse)
+  ShortenResponse response = jGooGl.shorten("http://goo.gl/3X4m913");
+  shortUrl = response.getShortUrl();
+```
 
 Shortening is really easy and there's not much you can change during using it.
 But please be aware of the "small catch" while using on* methods, it's explained in detail bellow.
@@ -68,27 +77,33 @@ But please be aware of the "small catch" while using on* methods, it's explained
 Using this method you can both expand an shortened goo.gl url and query for it's statistics.
 To just query for the ExpandResponse use such code:
 
-       ExpandResponse expandResponse = jGooGl.expand(shortenedLongUrl); // this would be a url like: goo.gl/GOOGLSH
+```java
+  ExpandResponse expandResponse = jGooGl.expand(shortenedLongUrl); // this would be a url like: goo.gl/GOOGLSH
+```
 
 ### Expand() and Analytics ###
 
 Before we go into how expand() can and is used to fetch an AnalyticsResponse let's use the two dedicated methods firstL
 
-      // using the default projection (or the one specified during your GooGlBuilder phase)
-      AnalyticsResponse response = jGooGl.analyticsFor(shortenedLongUrl);
+```java
+  // using the default projection (or the one specified during your GooGlBuilder phase)
+  AnalyticsResponse response = jGooGl.analyticsFor(shortenedLongUrl);
 
-      // using the specialized projections
-      AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_CLICKS);
+  // using the specialized projections
+  AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_CLICKS);
 
-      AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_TOP_STRINGS);
+  AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_TOP_STRINGS);
 
-      AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_FULL);
+  AnalyticsResponse analyticsResponse = jGooGl.analyticsFor(shortenedLongUrl, GooGlProjection.ANALYTICS_FULL);
+```
 
 That's quite nice, but in case you'd like to stick to your expand() method calls here's a nice **type-safe** way of doing so.
 (By type-safe I mean that even if you had analyticsMode set in the builder, and call expands on the jGooGl instance, it will have the details in it,
 in fact you could try to cast ExpandResponse to AnalyticsResponse "sometimes", the bellow apparoach takes away the headache of casting stuff by hand... :-))
 
-      AnalyticsResponse analyticsResponse = jGooGl.withAnalytics(ANALYTICS_FULL).expand(myShortUrl);
+```java
+  AnalyticsResponse analyticsResponse = jGooGl.withAnalytics(ANALYTICS_FULL).expand(myShortUrl);
+```
 
 This is possible because withAnalytics creates a JGooGlWithAnalytics instance which will delegate all calls to the Real JGooGl instance,
 but take care of the analytics casting where applicable.
@@ -100,25 +115,30 @@ But there is a nice way of calling some shortens without using the "default" ("s
 The values set during construction will always be used if you don't use any of the bellow methods,
 also the methods bellow only set the variable "for the current execution". Let's see some examples:
 
-      JGooGl jGooGl = JGooGl.withoutKey();
+```java
+  JGooGl jGooGl = JGooGl.withoutKey();
 
-      jGooGl.shorten(url); // this calls without any key
+  jGooGl.shorten(url); // this calls without any key
 
-      jGooGl.onKey(myKey).shorten(url); // this calls using the myKey as key
+  jGooGl.onKey(myKey).shorten(url); // this calls using the myKey as key
 
-      // but the next execution will still be using the "default key"
-      jGooGl.shorten(url); // this calls without any key
+  // but the next execution will still be using the "default key"
+  jGooGl.shorten(url); // this calls without any key
+```
 
 This way you're free to assume that the defaults stay defaults during your apps life-time,
 and no-one will break it by setting some weird value in it.
 
 The same can be done with all other parameters, like this:
-     jGooGl.onKey(myKey).shorten();
-     jGooGl.onNoKey().shorten();
-     jGooGl.onVersion(GooGlVersion.V1).shorten();
 
-     // and
-     jGooGl.onProjection(GooGlProjection.ANALYTICS_FULL).expand(longUrl);
+```java
+  jGooGl.onKey(myKey).shorten();
+  jGooGl.onNoKey().shorten();
+  jGooGl.onVersion(GooGlVersion.V1).shorten();
+
+  // and
+  jGooGl.onProjection(GooGlProjection.ANALYTICS_FULL).expand(longUrl);
+```
 
 Frequently Asked Questions
 --------------------------
@@ -131,4 +151,4 @@ Frequently Asked Questions
 
 License
 -------
-I'm releasing this under the ..... //TODO
+I've written this code years ago... Beerware license!
