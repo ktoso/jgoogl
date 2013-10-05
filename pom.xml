@@ -10,7 +10,7 @@
 
   <groupId>pl.project13</groupId>
   <artifactId>jgoogl</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
 
   <name>jGooGl - Fluent goo.gl API Java Wrapper</name>
   <description>
